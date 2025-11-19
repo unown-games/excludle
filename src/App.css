@@ -1,235 +1,174 @@
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+.app-root {
+  height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue",
     sans-serif;
-  background: radial-gradient(circle at top, #111827, #020617 55%);
-  color: #f9fafb;
+  color: #111827;
 }
 
-.app {
-  max-width: 560px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 20px 16px 32px;
-  box-sizing: border-box;
-}
-
-.title {
+.game-container {
+  width: 100%;
+  max-width: 720px;
+  padding: 12px 16px 16px;
   text-align: center;
-  font-size: 2rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin: 0 0 16px;
 }
 
-.hint-box {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 12px;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-  padding: 12px 14px;
-  font-size: 0.95rem;
+.game-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 
-.hint-title {
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  color: #9ca3af;
-  margin-bottom: 4px;
+.subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
 }
 
-.hint-text {
-  margin-bottom: 6px;
-}
-
-.hint-meta {
-  font-size: 0.8rem;
-  color: #9ca3af;
-}
-
-.board {
-  margin-top: 18px;
+.rows-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 12px;
 }
 
-.row {
+.row-block {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
-.tiles {
+.cards-row {
   display: flex;
+  flex-wrap: nowrap;
   gap: 6px;
 }
 
-.tile {
-  width: 40px;
-  height: 40px;
-  background: #020617;
-  border-radius: 4px;
-  border: 1px solid #4b5563;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.tile-empty {
-  background: #020617;
-  border-style: dashed;
-  border-color: #374151;
-}
-
-.score-badge {
-  min-width: 110px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid #4b5563;
-  background: #020617;
-  text-align: right;
-  font-size: 0.75rem;
-}
-
-.score-empty {
-  visibility: hidden;
-}
-
-.score-number {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.score-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.score-correct {
-  border-color: #16a34a;
-  background: radial-gradient(circle at left, #22c55e, #052e16);
-}
-
-.score-hot {
-  border-color: #ea580c;
-  background: radial-gradient(circle at left, #f97316, #451a03);
-}
-
-.score-warm {
-  border-color: #eab308;
-  background: radial-gradient(circle at left, #facc15, #3f3f09);
-}
-
-.score-cool {
-  border-color: #38bdf8;
-  background: radial-gradient(circle at left, #38bdf8, #0b1120);
-}
-
-.score-cold {
-  border-color: #64748b;
-  background: radial-gradient(circle at left, #64748b, #020617);
-}
-
-.guess-form {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.guess-input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid #4b5563;
-  background: #020617;
-  color: #f9fafb;
-  font-size: 0.95rem;
-}
-
-.guess-input:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5);
-}
-
-.guess-button {
-  border-radius: 999px;
-  padding: 0 16px;
+/* Tile style */
+.card {
+  min-width: 150px;
+  height: 60px;
+  border-radius: 6px;
+  background: #e5e5e5;
   border: none;
-  background: #4f46e5;
-  color: white;
-  font-weight: 600;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  text-align: center;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: 0.02em;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease,
+    color 0.08s ease, opacity 0.08s ease;
 }
 
-.guess-button:disabled {
-  opacity: 0.5;
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+}
+
+/* future rows: blank, lighter grey, no text (handled in JS) */
+.card.future {
+  background: #e9ecef;
+  color: transparent;
   cursor: default;
+  box-shadow: none;
+}
+
+.card.disabled {
+  box-shadow: none;
+}
+
+/* feedback states */
+.card.correct {
+  background: #34d399;
+  color: #065f46;
+}
+
+.card.wrong {
+  background: #fecaca;
+  color: #7f1d1d;
 }
 
 .status {
-  margin-top: 12px;
-  min-height: 22px;
-  text-align: center;
-  font-size: 0.95rem;
-  font-weight: 600;
+  margin-top: 2px;
+  margin-bottom: 6px;
 }
 
-.status-info {
-  color: #e5e7eb;
+.status-line {
+  font-size: 13px;
+  margin-bottom: 2px;
 }
 
-.status-win {
-  color: #4ade80;
+.message {
+  font-size: 13px;
+  color: #6b7280;
+  min-height: 18px;
+  margin-top: 2px;
 }
 
-.status-lose {
-  color: #fb7185;
-}
-
-.remaining {
-  margin-top: 4px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #9ca3af;
-}
-
-.new-game {
-  margin-top: 16px;
-  padding: 8px 16px;
+.secondary-btn {
   border-radius: 999px;
-  border: 1px solid #6b7280;
-  background: transparent;
-  color: #e5e7eb;
-  font-weight: 600;
+  border: 1px solid #d1d5db;
+  padding: 6px 16px;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 0.9rem;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
 }
 
-.new-game:hover {
-  background: rgba(148, 163, 184, 0.15);
+.secondary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.16);
 }
 
-@media (max-width: 480px) {
-  .tile {
-    width: 34px;
-    height: 34px;
-    font-size: 0.85rem;
+/* extra safety for smaller screens */
+@media (max-height: 700px) {
+  .game-title {
+    font-size: 22px;
   }
-
-  .score-badge {
-    min-width: 96px;
-    padding: 4px 8px;
+  .card {
+    min-width: 140px;
+    height: 56px;
+    font-size: 13px;
   }
-
-  .hint-box {
-    font-size: 0.85rem;
+  .rows-container {
+    gap: 6px;
   }
 }
+
+.mistake-dots {
+  font-size: 20px;
+  letter-spacing: 6px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.mistake-dot {
+  font-weight: 600;
+}
+
+.category-reveal {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+}
+.category-display {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+}
+
+

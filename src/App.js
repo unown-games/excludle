@@ -1,163 +1,209 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
+import wordBank from "./word_bank.json";
 
-const MAX_GUESSES = 6;
+const ROWS_PER_GAME = 4;
+const MAX_MISTAKES = 3;
 
-const WORD_BANK = [
-  {
-    target: "HAPPY",
-    synonyms: ["GLAD", "CHEERFUL", "JOYFUL", "MERRY", "ELATED"],
-    close: ["CONTENT", "UPBEAT", "SMILING"],
-    hint: "Describes someone who feels joy or pleasure."
-  },
-  {
-    target: "ANGRY",
-    synonyms: ["MAD", "FURIOUS", "IRATE", "LIVID"],
-    close: ["UPSET", "ANNOYED"],
-    hint: "A strong feeling of displeasure."
-  },
-  {
-    target: "SMART",
-    synonyms: ["BRIGHT", "CLEVER", "ASTUTE", "SHREWD"],
-    close: ["WISE", "QUICK"],
-    hint: "Good at learning and solving problems."
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-];
-
-function randomWord() {
-  return WORD_BANK[Math.floor(Math.random() * WORD_BANK.length)];
+  return arr;
 }
 
-export default function App() {
-  const [word, setWord] = useState(null);
-  const [guesses, setGuesses] = useState([]);
-  const [input, setInput] = useState("");
-  const [remaining, setRemaining] = useState(MAX_GUESSES);
-  const [status, setStatus] = useState({ text: "", type: "info" });
+function buildRows() {
+  const allGames = [...wordBank.games];
+  const shuffledGames = shuffle(allGames);
+  const selected = shuffledGames.slice(0, ROWS_PER_GAME);
+
+  return selected.map((g) => {
+    const cards = shuffle([
+      { text: g.word1, isImposter: false },
+      { text: g.word2, isImposter: false },
+      { text: g.word3, isImposter: false },
+      { text: g.word4, isImposter: false },
+      { text: g.imposter, isImposter: true }
+    ]);
+
+    return {
+      category: g.category,
+      cards,
+      solved: false,
+      selectedIndex: null,
+      wrongIndices: []
+    };
+  });
+}
+
+function App() {
+  const [rows, setRows] = useState(buildRows);
+  const [mistakesLeft, setMistakesLeft] = useState(MAX_MISTAKES);
+  const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
+  const [finishedAllRows, setFinishedAllRows] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState(""); // NEW
 
-  useEffect(() => {
-    resetGame();
-  }, []);
+  const activeRowIndex = rows.findIndex((r) => !r.solved);
 
-  function resetGame() {
-    const w = randomWord();
-    setWord(w);
-    setGuesses([]);
-    setRemaining(MAX_GUESSES);
+  const renderMistakeDots = () => {
+    const dots = [];
+    for (let i = 0; i < MAX_MISTAKES; i++) {
+      dots.push(
+        <span key={i} className="mistake-dot">
+          {i < mistakesLeft ? "●" : "○"}
+        </span>
+      );
+    }
+    return dots;
+  };
+
+  const handleCardClick = (rowIndex, cardIndex) => {
+    if (gameOver || finishedAllRows) return;
+    if (rowIndex !== activeRowIndex) return;
+
+    setRows((prevRows) => {
+      const newRows = prevRows.map((row, idx) => {
+        if (idx !== rowIndex) return row;
+
+        const card = row.cards[cardIndex];
+
+        if (row.selectedIndex !== null || row.wrongIndices.includes(cardIndex)) {
+          return row;
+        }
+
+        if (card.isImposter) {
+          const updatedRow = {
+            ...row,
+            solved: true,
+            selectedIndex: cardIndex
+          };
+
+          // UPDATE CATEGORY DISPLAY
+          setCurrentCategory(row.category);
+
+          const tempRows = prevRows.map((r, i2) =>
+            i2 === rowIndex ? updatedRow : r
+          );
+          const allSolved = tempRows.every((r) => r.solved);
+
+          if (allSolved) {
+            setFinishedAllRows(true);
+            setMessage("You found all the imposters!");
+            setCurrentCategory(""); // clear category
+          } else {
+            setMessage("Nice! Move on to the next row.");
+          }
+
+          return updatedRow;
+        } else {
+          const updatedWrongIndices = [...row.wrongIndices, cardIndex];
+          const updatedRow = {
+            ...row,
+            wrongIndices: updatedWrongIndices
+          };
+
+          const newMistakes = mistakesLeft - 1;
+          setMistakesLeft(newMistakes);
+
+          if (newMistakes <= 0) {
+            setGameOver(true);
+            setMessage("Game over. No mistakes left.");
+            setCurrentCategory(""); // clear category
+          } else {
+            setMessage("Nope. Try a different option in this row.");
+          }
+
+          return updatedRow;
+        }
+      });
+
+      return newRows;
+    });
+  };
+
+  const handleRestart = () => {
+    setRows(buildRows());
+    setMistakesLeft(MAX_MISTAKES);
+    setMessage("");
     setGameOver(false);
-    setInput("");
-    setStatus({ text: "Type a synonym and press Enter.", type: "info" });
-  }
-
-  function classifyGuess(guess) {
-    const g = guess.trim().toUpperCase();
-    if (g === word.target) return "same";
-    if (word.synonyms.includes(g)) return "correct";
-    if (word.close.includes(g)) return "close";
-    return "wrong";
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (gameOver) return;
-
-    const guess = input.trim().toUpperCase();
-    if (!guess) return;
-
-    const type = classifyGuess(guess);
-
-    const newGuess = { text: guess, result: type };
-    setGuesses((prev) => [...prev, newGuess]);
-
-    if (type === "same") {
-      setStatus({
-        text: "That's the target word. Try a synonym!",
-        type: "info"
-      });
-      setInput("");
-      return;
-    }
-
-    if (type === "correct") {
-      setStatus({ text: "Correct! You win!", type: "win" });
-      setGameOver(true);
-      return;
-    }
-
-    const newRemaining = remaining - 1;
-    setRemaining(newRemaining);
-
-    if (newRemaining <= 0) {
-      setStatus({
-        text: `Out of guesses! The word was "${word.target}".`,
-        type: "lose"
-      });
-      setGameOver(true);
-      return;
-    }
-
-    if (type === "close") {
-      setStatus({
-        text: "Close! You're on the right track.",
-        type: "info"
-      });
-    } else {
-      setStatus({
-        text: "Not quite — try another synonym.",
-        type: "info"
-      });
-    }
-
-    setInput("");
-  }
-
-  function tileClass(result) {
-    if (result === "correct") return "tile tile-correct";
-    if (result === "close") return "tile tile-close";
-    if (result === "wrong" || result === "same") return "tile tile-wrong";
-    return "tile";
-  }
-
-  if (!word) return <h1>Loading...</h1>;
+    setFinishedAllRows(false);
+    setCurrentCategory(""); // reset category
+  };
 
   return (
-    <div className="app">
-      <h1 className="title">Synonymle</h1>
+    <div className="app-root">
+      <main className="game-container">
+        <h1 className="game-title">Imposter</h1>
 
-      <div className="hint-box">
-        <div><strong>Target word:</strong> {word.target}</div>
-        <div><strong>Hint:</strong> {word.hint}</div>
-      </div>
-
-      <div className="board">
-        {guesses.map((g, index) => (
-          <div className="row" key={index}>
-            {g.text.split("").map((ch, i) => (
-              <div key={i} className={tileClass(g.result)}>
-                {ch}
-              </div>
-            ))}
+        {/* CATEGORY BOX (TOP) */}
+        {currentCategory && (
+          <div className="category-display">
+            Category: {currentCategory}
           </div>
-        ))}
-      </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="guess-form">
-        <input
-          value={input}
-          placeholder="Enter a synonym"
-          onChange={(e) => setInput(e.target.value)}
-          disabled={gameOver}
-        />
-        <button disabled={gameOver}>Guess</button>
-      </form>
+        <div className="subtitle">Find the odd one out in each row.</div>
 
-      <div className={`status ${status.type}`}>{status.text}</div>
-      <div className="remaining">{remaining} guesses remaining</div>
+        <div className="rows-container">
+          {rows.map((row, rowIndex) => {
+            const isActive =
+              rowIndex === activeRowIndex && !gameOver && !finishedAllRows;
+            const isFuture =
+              !row.solved && rowIndex > activeRowIndex && !finishedAllRows;
 
-      <button className="new-game" onClick={resetGame}>
-        New Word
-      </button>
+            return (
+              <section key={rowIndex} className="row-block">
+                <div className="cards-row">
+                  {row.cards.map((card, cardIndex) => {
+                    const isSelected = row.selectedIndex === cardIndex;
+                    const isWrong = row.wrongIndices.includes(cardIndex);
+
+                    const disabled =
+                      gameOver ||
+                      finishedAllRows ||
+                      row.solved ||
+                      !isActive;
+
+                    const showText = !isFuture;
+
+                    let cardClass = "card";
+                    if (isSelected) cardClass += " correct";
+                    else if (isWrong) cardClass += " wrong";
+                    if (disabled) cardClass += " disabled";
+                    if (isFuture) cardClass += " future";
+
+                    return (
+                      <button
+                        key={cardIndex}
+                        className={cardClass}
+                        onClick={() => handleCardClick(rowIndex, cardIndex)}
+                      >
+                        {showText ? card.text : ""}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+
+        <div className="status">
+          <div className="mistake-dots">{renderMistakeDots()}</div>
+          <div className="message">{message}</div>
+        </div>
+
+        {(gameOver || finishedAllRows) && (
+          <button className="secondary-btn" onClick={handleRestart}>
+            Play Again
+          </button>
+        )}
+      </main>
     </div>
   );
 }
+
+export default App;
