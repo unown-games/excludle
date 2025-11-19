@@ -1,0 +1,100 @@
+{
+    "games": [
+        {
+            "category": "Dry _____",
+            "word1": "Ice",
+            "word2": "Erase Marker",
+            "word3": "Rot",
+            "word4": "Socket",
+            "imposter": "Pie"
+        },
+        {
+            "category": "Types of races",
+            "word1": "Horse",
+            "word2": "Car",
+            "word3": "Person",
+            "word4": "Dog",
+            "imposter": "Dolphin"
+        },
+        {
+            "category": "Units of time",
+            "word1": "Minute",
+            "word2": "Fortnight",
+            "word3": "Eon",
+            "word4": "Decade",
+            "imposter": "League"
+        },
+        {
+            "category": "Things that can be pickled",
+            "word1": "Cucumbers",
+            "word2": "Plum",
+            "word3": "Peppers",
+            "word4": "Mango",
+            "imposter": "Apple"
+        },
+        {
+            "category": "Soft _____",
+            "word1": "Drink",
+            "word2": "Spot",
+            "word3": "Landing",
+            "word4": "Skills",
+            "imposter": "Garlic"
+        },
+        {
+            "category": "Broken _____",
+            "word1": "Record",
+            "word2": "Heart",
+            "word3": "Promise",
+            "word4": "Bone",
+            "imposter": "Toothpaste"
+        },
+        {
+            "category": "Things you can roast",
+            "word1": "Peppers",
+            "word2": "Coffee",
+            "word3": "Nuts",
+            "word4": "Marshmallows",
+            "imposter": "Lettuce"
+        },
+        {
+            "category": "Things that can be measured in karats",
+            "word1": "Diamonds",
+            "word2": "Sapphires",
+            "word3": "Rubies",
+            "word4": "Emeralds",
+            "imposter": "Platinum"
+        },
+        {
+            "category": "Deep _____",
+            "word1": "End",
+            "word2": "Sleep",
+            "word3": "Dive",
+            "word4": "Fryer",
+            "imposter": "Ticket"
+        },
+        {
+            "category": "Cold _____",
+            "word1": "Brew",
+            "word2": "Front",
+            "word3": "Case",
+            "word4": "Shoulder",
+            "imposter": "Corner"
+        },
+        {
+            "category": "Light _____",
+            "word1": "Bulb",
+            "word2": "Year",
+            "word3": "Rail",
+            "word4": "Touch",
+            "imposter": "Paper"
+        },
+        {
+            "category": "Things that can be rolled",
+            "word1": "Dough",
+            "word2": "Sleeves",
+            "word3": "Credits",
+            "word4": "Dice",
+            "imposter": "Sand"
+        }
+    ]
+}
