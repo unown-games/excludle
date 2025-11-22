@@ -132,7 +132,7 @@ function App() {
             const correctRows = prevRows.filter((r) => r.solved).length;
             const lostCategory = row.category;
 
-            setPopupMessage("Game over. No mistakes left.");
+            setPopupMessage("Game over");
             setPopupDetails(
               `You got ${correctRows} rows correct.\nThe category was: ${lostCategory}`
             );
@@ -166,6 +166,7 @@ function App() {
 
   const handleShowInstructions = () => {
     setShowMenu(false);
+
     const instructions = `Disconnections is a word game. Each row hides a category (like "Things you can roast" or "Types of vehicles") and shows five words.
 
 Your job: tap the one word that DOESN'T belong in that hidden category – the imposter.
@@ -176,22 +177,29 @@ Dog • Cat • Car • Horse • Bird
 The secret category is "Animals", so "Car" is the imposter.
 
 You only get ${MAX_MISTAKES} wrong guesses TOTAL for the whole game. Once you're out of mistakes, the game ends.`;
-    alert(instructions);
+
+    setPopupMessage("How to play");
+    setPopupDetails(instructions);
+    setShowPopup(true);
   };
 
   const handleShowAbout = () => {
     setShowMenu(false);
+
     const about = `Disconnections is a simple "odd one out" guessing game inspired by daily word and logic games.
 
 Tap tiles to find the imposter in each row and see how few guesses you can use.`;
-    alert(about);
+
+    setPopupMessage("About Disconnections");
+    setPopupDetails(about);
+    setShowPopup(true);
   };
 
   return (
     <div className="app-root">
       <main className="game-container">
         <div className="content-wrap">
-          {/* HEADER: title + menu + subtitle, all sharing the same width as the grid */}
+          {/* HEADER: title + menu + subtitle */}
           <header className="header">
             <div className="header-top">
               <h1 className="game-title">Disconnections</h1>
@@ -210,10 +218,15 @@ Tap tiles to find the imposter in each row and see how few guesses you can use.`
                     className="dropdown-item"
                     onClick={handleShowInstructions}
                   >
-                    Instructions
+                    <span className="dropdown-icon">?</span>
+                    <span className="dropdown-label">How to play</span>
                   </button>
-                  <button className="dropdown-item" onClick={handleShowAbout}>
-                    About
+                  <button
+                    className="dropdown-item"
+                    onClick={handleShowAbout}
+                  >
+                    <span className="dropdown-icon">i</span>
+                    <span className="dropdown-label">About</span>
                   </button>
                 </div>
               )}
@@ -224,7 +237,7 @@ Tap tiles to find the imposter in each row and see how few guesses you can use.`
             </div>
           </header>
 
-          {/* BOARD: category banner + rows, same width as header */}
+          {/* BOARD: category banner + rows */}
           <div className="board">
             {currentCategory && (
               <div className="category-banner" key={currentCategory}>
