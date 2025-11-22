@@ -11,46 +11,165 @@
 
 .game-container {
   width: 100%;
-  max-width: 720px;
-  padding: 12px 16px 16px;
+  max-width: 1100px;
+  padding: 24px 32px 24px;
+}
+
+/* Everything (header, banner, grid, status) shares this width */
+.content-wrap {
+  max-width: 820px;          /* controls width of grid & header */
+  margin: 0 auto;
   text-align: center;
 }
 
-.game-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 2px;
+/* HEADER */
+
+.header {
+  margin-bottom: 24px;
 }
 
-.subtitle {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 12px;
+.header-top {
+  position: relative;
+  display: flex;
+  align-items: center;        /* vertically center title + dots */
+  justify-content: center;    /* center title horizontally */
 }
+
+.game-title {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* Subtitle right under title */
+.subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* 3-dot menu button aligned with far right edge of grid (via content-wrap) */
+.menu-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  color: #374151;
+  padding: 4px 6px;
+  border-radius: 999px;
+}
+
+.menu-button:hover {
+  background: rgba(17, 24, 39, 0.06);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;             
+  left: 100%;            
+  margin-left: 8px;      
+
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  padding: 4px 0;
+  min-width: 160px;
+  z-index: 10;
+}
+
+
+.dropdown-item {
+  width: 100%;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+  color: #111827;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+/* BOARD (banner + rows) – same width as header/content-wrap */
+
+.board {
+  width: 100%;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Yellow category bar — intentionally shorter than grid */
+.category-banner {
+  width: 90%;                 /* shorter than grid (play with 88–94% if needed) */
+  margin: 0 auto;             /* center it perfectly */
+  background: #f9df6d;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: categoryFadeIn 0.8s ease-out forwards;
+}
+
+.category-banner-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+@keyframes categoryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* GRID LAYOUT */
 
 .rows-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  width: 100%;
 }
 
 .row-block {
-  display: flex;
-  justify-content: center;
+  width: 100%;
 }
 
 .cards-row {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 6px;
+  gap: 10px;
+  width: 100%;
 }
 
-/* Tile style */
+/* Tiles: evenly fill the width of the board */
 .card {
-  min-width: 150px;
-  height: 60px;
-  border-radius: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 70px;
+  border-radius: 10px;
   background: #e5e5e5;
   border: none;
   outline: none;
@@ -60,7 +179,7 @@
   padding: 4px;
   text-align: center;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #111827;
   letter-spacing: 0.02em;
@@ -73,9 +192,9 @@
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
 }
 
-/* future rows: blank, lighter grey, no text (handled in JS) */
+/* future rows: blank, lighter grey, no text */
 .card.future {
-  background: #e9ecef;
+  background: #edf0f3;
   color: transparent;
   cursor: default;
   box-shadow: none;
@@ -96,14 +215,12 @@
   color: #7f1d1d;
 }
 
+/* STATUS AREA */
+
 .status {
   margin-top: 2px;
   margin-bottom: 6px;
-}
-
-.status-line {
-  font-size: 13px;
-  margin-bottom: 2px;
+  font-size: 16px;
 }
 
 .message {
@@ -112,6 +229,19 @@
   min-height: 18px;
   margin-top: 2px;
 }
+
+.mistake-dots {
+  font-size: 20px;
+  letter-spacing: 6px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.mistake-dot {
+  font-weight: 600;
+}
+
+/* Buttons */
 
 .secondary-btn {
   border-radius: 999px;
@@ -130,74 +260,19 @@
   box-shadow: 0 5px 12px rgba(15, 23, 42, 0.16);
 }
 
-/* extra safety for smaller screens */
-@media (max-height: 700px) {
-  .game-title {
-    font-size: 22px;
+/* small screens tweaks */
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 16px;
   }
+
+  .content-wrap {
+    max-width: 100%;
+  }
+
   .card {
-    min-width: 140px;
-    height: 56px;
-    font-size: 13px;
-  }
-  .rows-container {
-    gap: 6px;
-  }
-}
-
-.mistake-dots {
-  font-size: 20px;
-  letter-spacing: 6px;
-  color: #374151;
-  margin-bottom: 6px;
-}
-
-.mistake-dot {
-  font-weight: 600;
-}
-
-.category-reveal {
-  margin-top: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #374151;
-  text-align: center;
-}
-.category-display {
-  margin-top: 6px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #374151;
-}
-.category-banner {
-  background: #f9df6d;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  text-align: center;
-
-  opacity: 0;
-  transform: translateY(-4px);
-  animation: categoryFadeIn 0.8s ease-out forwards; /* slowed down */
-}
-
-.category-banner-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #000;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-@keyframes categoryFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    height: 60px;
+    font-size: 14px;
   }
 }
