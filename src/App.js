@@ -171,7 +171,7 @@ function App() {
             setPopupMessage("You found all the imposters!");
             setPopupDetails(details);
             setShowPopup(true);
-            setCurrentCategory("");
+
           } else {
             setMessage("Nice! Move on to the next row.");
           }
@@ -195,14 +195,16 @@ function App() {
 
             const correctRows = prevRows.filter((r) => r.solved).length;
             const lostCategory = row.category;
+            const lostImposter = row.cards.find((c) => c.isImposter)?.text || "";
 
             setPopupMessage("Game over");
             setPopupDetails(
-              `You got ${correctRows} rows correct.\nThe category was: ${lostCategory}`
+              `You got ${correctRows} rows correct.\nThe category was: ${lostCategory}\n\nThe odd word out was: ${lostImposter}`
             );
 
             setShowPopup(true);
-            setCurrentCategory("");
+            // keep the category visible on loss so the yellow banner still shows
+            setCurrentCategory(lostCategory);
           } else {
             setMessage("Nope. Try a different option in this row.");
           }
@@ -372,6 +374,7 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
           message={popupMessage}
           details={popupDetails}
           onClose={() => setShowPopup(false)}
+          tall={popupMessage && popupMessage.toLowerCase().includes("game over")}
         />
       )}
     </div>

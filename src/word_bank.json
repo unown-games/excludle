@@ -190,7 +190,7 @@
             "word2": "Lapel Pin",
             "word3": "Boutonnière",
             "word4": "Lavalier",
-            "imposter": "Corsage"
+            "imposter": "Corset"
         },
         {
             "category": "Cocktails",
@@ -198,31 +198,15 @@
             "word2": "Greyhound",
             "word3": "Screwdriver",
             "word4": "Sea Breeze",
-            "imposter": "Martini"
-        },
-        {
-            "category": "Pixar Protagonists",
-            "word1": "Clownfish",
-            "word2": "Racecar",
-            "word3": "Grumpy Old Man",
-            "word4": "Talking Doll",
-            "imposter": "Scary Monster"
-        },
-        {
-            "category": "Starting With Synonyms For \"Eat\"",
-            "word1": "Bolt Cutter",
-            "word2": "Scarf Ring",
-            "word3": "Chow Mein",
-            "word4": "Wolf Eel",
-            "imposter": "Gorge Hook"
+            "imposter": "Boxset"
         },
         {
             "category": "Adhere",
             "word1": "Fix",
-            "word2": "Plaster",
+            "word2": "Bond",
             "word3": "Paste",
             "word4": "Stick",
-            "imposter": "Bond"
+            "imposter": "Bottle"
         },
         {
             "category": "Graze",
@@ -230,7 +214,7 @@
             "word2": "Kiss",
             "word3": "Skim",
             "word4": "Stroke",
-            "imposter": "Nudge"
+            "imposter": "Hug"
         },
         {
             "category": "Parts Of A Tooth",
@@ -254,7 +238,7 @@
             "word2": "Squat",
             "word3": "Solid",
             "word4": "Thick",
-            "imposter": "Stout"
+            "imposter": "Lunge"
         },
         {
             "category": "Steer",
@@ -262,15 +246,7 @@
             "word2": "Lead",
             "word3": "Guide",
             "word4": "Shepherd",
-            "imposter": "Pilot"
-        },
-        {
-            "category": "Second Words In Poe Stories, After \"The\"",
-            "word1": "Cask",
-            "word2": "Pit",
-            "word3": "Fall",
-            "word4": "Masque",
-            "imposter": "Raven"
+            "imposter": "Sheep"
         },
         {
             "category": "Organ Plus A Letter",
@@ -286,7 +262,7 @@
             "word2": "Joker",
             "word3": "Laugh",
             "word4": "Riot",
-            "imposter": "Comic"
+            "imposter": "Scene"
         },
         {
             "category": "Kinds Of Tomatoes",
@@ -297,36 +273,12 @@
             "imposter": "Olive"
         },
         {
-            "category": "Best Actress Oscar Winners",
-            "word1": "Berry",
-            "word2": "Stone",
-            "word3": "Swank",
-            "word4": "Madison",
-            "imposter": "Close"
-        },
-        {
-            "category": "Ending In Synonyms For \"Location\"",
-            "word1": "Commonplace",
-            "word2": "Parasite",
-            "word3": "Needlepoint",
-            "word4": "Sunspot",
-            "imposter": "Postmark"
-        },
-        {
             "category": "\"You Bet\"",
             "word1": "Absolutely",
             "word2": "Of Course",
             "word3": "Okey-Doke",
             "word4": "Sure Thing",
-            "imposter": "Affirmative"
-        },
-        {
-            "category": "Forbidden",
-            "word1": "Off-Limits",
-            "word2": "Proscribed",
-            "word3": "Taboo",
-            "word4": "Verboten",
-            "imposter": "Sacred"
+            "imposter": "Not Sure"
         },
         {
             "category": "Basketball Shots",
@@ -342,7 +294,7 @@
             "word2": "Scattergories",
             "word3": "Leavening",
             "word4": "Shoo-In",
-            "imposter": "Runway"
+            "imposter": "Sitcom"
         },
         {
             "category": "Thigns followed by Sweet",
@@ -351,6 +303,110 @@
             "word3": "Tooth",
             "word4": "Heart",
             "imposter": "Cloud"
+        },
+        {
+            "category": "____ Ring",
+            "word1": "Engagement",
+            "word2": "Boxing",
+            "word3": "Oura",
+            "word4": "Napkin",
+            "imposter": "Chair"
+        },
+        {
+            "category": "Words that spell something else backwards",
+            "word1": "Stressed",
+            "word2": "Drawer",
+            "word3": "Diaper",
+            "word4": "Time",
+            "imposter": "Plan"
+        },
+        {
+            "category": "Sports where you hold a stick",
+            "word1": "Baseball",
+            "word2": "Lacrosse",
+            "word3": "Hockey",
+            "word4": "Golf",
+            "imposter": "Football"
+        },
+        {
+            "category": "Black and white animals",
+            "word1": "Panda",
+            "word2": "Zebra",
+            "word3": "Skunk",
+            "word4": "Orca",
+            "imposter": "Lion"
+        },
+        {
+            "category": "Words that start with \"ex\"",
+            "word1": "Example",
+            "word2": "Excite",
+            "word3": "Exclude",
+            "word4": "Examine",
+            "imposter": "Include"
+        },
+        {
+            "category": "Acronyms with multiple meanings",
+            "word1": "PC",
+            "word2": "LOL",
+            "word3": "PT",
+            "word4": "ATM",
+            "imposter": "BTW"
+        },
+        {
+            "category": "Things that have scales",
+            "word1": "Fish",
+            "word2": "Snake",
+            "word3": "Lizard",
+            "word4": "Dragon",
+            "imposter": "Bird"
+        },
+        {
+            "category": "Names that are also words",
+            "word1": "Jack",
+            "word2": "Bob",
+            "word3": "Rob",
+            "word4": "Will",
+            "imposter": "Steve"
+        },
+        {
+            "category": "Words that contain double letters",
+            "word1": "Letter",
+            "word2": "Bookkeeper",
+            "word3": "Committee",
+            "word4": "Success",
+            "imposter": "Planet"
+        },
+        {
+            "category": "Movies that blend animation and live action",
+            "word1": "Who Framed Roger Rabbit",
+            "word2": "Space Jam",
+            "word3": "Enchanted",
+            "word4": "The SpongeBob SquarePants Movie",
+            "imposter": "The Lion King"
+        },
+        {
+            "category": "USA Capital Cities",
+            "word1": "Albany",
+            "word2": "Austin",
+            "word3": "Denver",
+            "word4": "Phoenix",
+            "imposter": "Pittsburgh"
+        },
+        {
+            "category": "Famous Scientists",
+            "word1": "Einstein",
+            "word2": "Curie",
+            "word3": "Newton",
+            "word4": "Hawking",
+            "imposter": "Epstein"
+        },
+        {
+            "category": "Foods that are elevated with cheese",
+            "word1": "Burger",
+            "word2": "Macaroni",
+            "word3": "Crackers",
+            "word4": "Broccoli Soup",
+            "imposter": "Steak"
         }
     ]
 }
