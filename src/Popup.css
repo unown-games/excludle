@@ -26,7 +26,7 @@
 
 /* Taller variant for game over + heavier content */
 .popup-content.tall {
-  min-height: 320px; /* makes the popup taller than default */
+  min-height: 320px;
   padding: 28px 34px;
   gap: 18px;
 }
@@ -86,13 +86,13 @@
   background: #e5e7eb;
 }
 
-/* BODY TEXT */
+/* BODY TEXT - default (non game over) */
 .popup-details {
-  text-align: left;
   font-size: 15px;
   line-height: 1.55;
 }
 
+/* Simple paragraphs for instructions / about popups */
 .popup-paragraph {
   margin: 0 0 16px 0;
   color: #374151;
@@ -100,6 +100,95 @@
 
 .popup-paragraph:last-child {
   margin-bottom: 0;
+}
+
+/* ===== GAME OVER RESULTS LAYOUT ===== */
+
+.popup-results {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.popup-summary {
+  margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popup-summary-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #9ca3af;
+}
+
+.popup-summary-main {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.popup-summary-number {
+  font-weight: 700;
+}
+
+.popup-summary-slash {
+  margin: 0 2px;
+}
+
+.popup-summary-total {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.popup-summary-text {
+  margin-left: 4px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+
+/* Card that holds Category & Odd One Out */
+.popup-result-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Each line (Category, Odd One Out) */
+.popup-result-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.popup-result-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+.popup-result-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Highlight the odd one out a bit more */
+.popup-result-value-highlight {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 /* Mobile adjustments */
@@ -112,8 +201,14 @@
     font-size: 18px;
   }
 
-  .popup-paragraph {
+  .popup-paragraph,
+  .popup-summary,
+  .popup-result-value {
     font-size: 14px;
+  }
+
+  .popup-result-card {
+    padding: 14px 14px;
   }
 }
 
@@ -148,8 +243,18 @@
   background: rgba(230, 238, 246, 0.03);
 }
 
-.app-root.dark .popup-paragraph {
+.app-root.dark .popup-paragraph,
+.app-root.dark .popup-summary,
+.app-root.dark .popup-result-label,
+.app-root.dark .popup-result-value {
   color: #cbdaf0;
 }
 
+.app-root.dark .popup-result-card {
+  background: rgba(15, 23, 42, 0.8);
+}
 
+.app-root.dark .popup-result-value-highlight {
+  background: rgba(248, 113, 113, 0.18);
+  color: #fecaca;
+}

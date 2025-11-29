@@ -171,7 +171,6 @@ function App() {
             setPopupMessage("You found all the imposters!");
             setPopupDetails(details);
             setShowPopup(true);
-
           } else {
             setMessage("Nice! Move on to the next row.");
           }
@@ -190,16 +189,19 @@ function App() {
           if (newMistakes <= 0) {
             setGameOver(true);
 
-            // When the player loses, show a clear loss message in the footer
+            // Status line under the board
             setMessage("Game Over! Try again tomorrow.");
 
             const correctRows = prevRows.filter((r) => r.solved).length;
             const lostCategory = row.category;
-            const lostImposter = row.cards.find((c) => c.isImposter)?.text || "";
+            const lostImposter =
+              row.cards.find((c) => c.isImposter)?.text || "";
 
             setPopupMessage("Game over");
             setPopupDetails(
-              `You got ${correctRows} rows correct.\nThe category was: ${lostCategory}\n\nThe odd word out was: ${lostImposter}`
+              `You solved ${correctRows} of ${ROWS_PER_GAME} rows.\n\n` +
+                `Category: ${lostCategory}\n\n` +
+                `Odd One Out: ${lostImposter}`
             );
 
             setShowPopup(true);
@@ -283,9 +285,16 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
                     <span className="dropdown-icon">i</span>
                     <span className="dropdown-label">About</span>
                   </button>
-                  <button className="dropdown-item" onClick={handleToggleDarkMode}>
-                    <span className="dropdown-icon">{darkMode ? "☀" : "☾"}</span>
-                    <span className="dropdown-label">{darkMode ? "Light mode" : "Dark mode"}</span>
+                  <button
+                    className="dropdown-item"
+                    onClick={handleToggleDarkMode}
+                  >
+                    <span className="dropdown-icon">
+                      {darkMode ? "☀" : "☾"}
+                    </span>
+                    <span className="dropdown-label">
+                      {darkMode ? "Light mode" : "Dark mode"}
+                    </span>
                   </button>
                 </div>
               )}
@@ -355,11 +364,12 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
             </div>
           </div>
 
-          {/* FOOTER ROW: Game #  |  Message  |  Lives */}
+          {/* STATUS MESSAGE – centered between board and footer */}
+          {message && <div className="status-message">{message}</div>}
+
+          {/* FOOTER ROW: Game # (left) | Lives (right) */}
           <footer className="footer-bar">
             <div className="game-number">Game #{gameNumber}</div>
-
-            <div className="footer-message">{message}</div>
 
             <div className="lives-row">
               <span className="lives-label">Lives:</span>
