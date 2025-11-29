@@ -171,6 +171,7 @@ function App() {
             setPopupMessage("You found all the imposters!");
             setPopupDetails(details);
             setShowPopup(true);
+            setMessage("You solved all 4 rows!");
           } else {
             setMessage("Nice! Move on to the next row.");
           }
@@ -189,7 +190,7 @@ function App() {
           if (newMistakes <= 0) {
             setGameOver(true);
 
-            // Status line under the board
+            // Status line in footer
             setMessage("Game Over! Try again tomorrow.");
 
             const correctRows = prevRows.filter((r) => r.solved).length;
@@ -364,12 +365,13 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
             </div>
           </div>
 
-          {/* STATUS MESSAGE – centered between board and footer */}
-          {message && <div className="status-message">{message}</div>}
-
-          {/* FOOTER ROW: Game # (left) | Lives (right) */}
+          {/* FOOTER ROW: Game # (left) | Message (center) | Lives (right) */}
           <footer className="footer-bar">
             <div className="game-number">Game #{gameNumber}</div>
+
+            <div className="footer-message">
+              {message}
+            </div>
 
             <div className="lives-row">
               <span className="lives-label">Lives:</span>

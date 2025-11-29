@@ -74,7 +74,7 @@
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 100%;          /* anchor to right of dots */
+  left: 100%;
   margin-left: 8px;
   background: #ffffff;
   border-radius: 16px;
@@ -359,7 +359,7 @@
 .app-root.dark .game-number,
 .app-root.dark .footer-message,
 .app-root.dark .lives-label {
- color: #cbdaf0;
+  color: #cbdaf0;
 }
 
 .app-root.dark .menu-button {
