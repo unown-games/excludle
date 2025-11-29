@@ -312,7 +312,9 @@
   box-shadow: 0 5px 12px rgba(15, 23, 42, 0.16);
 }
 
-/* small screens */
+/* ========================== */
+/* 📱 MOBILE FIX — KEEP ONE ROW */
+/* ========================== */
 
 @media (max-width: 768px) {
   .game-container {
@@ -328,19 +330,18 @@
     font-size: 14px;
   }
 
+  /* DON'T STACK FOOTER */
   .footer-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-
-  .footer-message {
-    order: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   .game-number,
-  .lives-row {
-    order: 1;
+  .footer-message,
+  .lives-label {
+    font-size: 12px;
   }
 }
 
@@ -358,7 +359,7 @@
 .app-root.dark .game-number,
 .app-root.dark .footer-message,
 .app-root.dark .lives-label {
-  color: #cbdaf0;
+ color: #cbdaf0;
 }
 
 .app-root.dark .menu-button {
