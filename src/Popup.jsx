@@ -6,13 +6,35 @@ function Popup({ message, details, onClose, tall = false }) {
 
   const lowerMessage = (message || "").toLowerCase();
   const isGameOver = lowerMessage.includes("game over");
+  const isHowToPlay = lowerMessage.includes("how to play");
 
-  // For non–game-over popups, keep the simple paragraph splitting
-  const paragraphs = !isGameOver && details
-    ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
-    : [];
+  // Default paragraphs for generic popups (e.g., About)
+  const paragraphs =
+    !isGameOver && !isHowToPlay && details
+      ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
+      : [];
 
-  // When it's game over, parse details into structured fields
+  // For How to play, parse the text into structured pieces
+  const instructionParagraphs =
+    isHowToPlay && details
+      ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
+      : [];
+
+  let overview = "";
+  let goal = "";
+  let exampleText = "";
+  let livesText = "";
+
+  if (isHowToPlay) {
+    overview = instructionParagraphs[0] || "";
+    goal = instructionParagraphs[1] || "";
+    const exRow = instructionParagraphs[2] || "";
+    const exExplain = instructionParagraphs[3] || "";
+    exampleText = [exRow, exExplain].filter(Boolean).join(" ");
+    livesText = instructionParagraphs[4] || "";
+  }
+
+  // ===== Game over parsing =====
   let solvedLine = "";
   let category = "";
   let oddOneOut = "";
@@ -25,10 +47,6 @@ function Popup({ message, details, onClose, tall = false }) {
       .map((l) => l.trim())
       .filter((l) => l.length > 0);
 
-    // Expecting:
-    // 0: "You solved X of Y rows."
-    // 1: "Category: Something"
-    // 2: "Odd One Out: Something"
     solvedLine = lines[0] || "";
 
     const match = solvedLine.match(/you solved\s+(\d+)\s+of\s+(\d+)/i);
@@ -50,9 +68,10 @@ function Popup({ message, details, onClose, tall = false }) {
     }
   }
 
-  // Choose icon based on the message
+  // Icon
   const getIcon = () => {
     if (isGameOver) return "✕";
+    if (isHowToPlay) return "?";
     if (lowerMessage.includes("found all")) return "★";
     if (lowerMessage.includes("about")) return "i";
     return "?";
@@ -117,6 +136,38 @@ function Popup({ message, details, onClose, tall = false }) {
                     {oddOneOut}
                   </div>
                 </div>
+              </div>
+            </div>
+          ) : isHowToPlay ? (
+            <div className="popup-results">
+              {goal && (
+                <div className="popup-summary">
+                  <div className="popup-summary-label">Objective</div>
+                  <div className="popup-summary-main">{goal}</div>
+                </div>
+              )}
+
+              <div className="popup-result-card popup-instructions-card">
+                {overview && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Overview</div>
+                    <div className="popup-result-value">{overview}</div>
+                  </div>
+                )}
+
+                {exampleText && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Example</div>
+                    <div className="popup-result-value">{exampleText}</div>
+                  </div>
+                )}
+
+                {livesText && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Lives & mistakes</div>
+                    <div className="popup-result-value">{livesText}</div>
+                  </div>
+                )}
               </div>
             </div>
           ) : (

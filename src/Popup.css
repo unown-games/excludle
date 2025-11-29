@@ -24,7 +24,7 @@
   gap: 14px;
 }
 
-/* Taller variant for game over + heavier content */
+/* Taller variant for game over / how to play */
 .popup-content.tall {
   min-height: 320px;
   padding: 28px 34px;
@@ -86,13 +86,13 @@
   background: #e5e7eb;
 }
 
-/* BODY TEXT - default (non game over) */
+/* BODY TEXT - default */
 .popup-details {
   font-size: 15px;
   line-height: 1.55;
 }
 
-/* Simple paragraphs for instructions / about popups */
+/* Simple paragraphs for generic popups */
 .popup-paragraph {
   margin: 0 0 16px 0;
   color: #374151;
@@ -102,7 +102,7 @@
   margin-bottom: 0;
 }
 
-/* ===== GAME OVER RESULTS LAYOUT ===== */
+/* ===== SHARED RESULTS LAYOUT (Game over + How to play) ===== */
 
 .popup-results {
   margin-top: 4px;
@@ -111,6 +111,7 @@
   gap: 16px;
 }
 
+/* Small label + main line at top */
 .popup-summary {
   margin: 0;
   text-align: center;
@@ -151,8 +152,7 @@
   color: #6b7280;
 }
 
-
-/* Card that holds Category & Odd One Out */
+/* Card that holds fields (Category/Odd One Out or Overview/Example/Lives) */
 .popup-result-card {
   background: #f9fafb;
   border-radius: 14px;
@@ -162,7 +162,7 @@
   gap: 12px;
 }
 
-/* Each line (Category, Odd One Out) */
+/* Each line inside the card */
 .popup-result-block {
   display: flex;
   flex-direction: column;

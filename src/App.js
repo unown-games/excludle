@@ -369,9 +369,7 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
           <footer className="footer-bar">
             <div className="game-number">Game #{gameNumber}</div>
 
-            <div className="footer-message">
-              {message}
-            </div>
+            <div className="footer-message">{message}</div>
 
             <div className="lives-row">
               <span className="lives-label">Lives:</span>
@@ -386,7 +384,7 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
           message={popupMessage}
           details={popupDetails}
           onClose={() => setShowPopup(false)}
-          tall={popupMessage && popupMessage.toLowerCase().includes("game over")}
+          tall={popupMessage && /game over|how to play/i.test(popupMessage)}
         />
       )}
     </div>
