@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import wordBank from "./word_bank.json";
+import wordBank from "./word_bank";
 import Popup from "./Popup";
 
 const ROWS_PER_GAME = 4;
