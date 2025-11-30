@@ -258,3 +258,29 @@
   background: rgba(248, 113, 113, 0.18);
   color: #fecaca;
 }
+
+/* ================================ */
+/* 🔧 Improve popup readability in dark mode */
+/* ================================ */
+
+.app-root.dark .popup-details,
+.app-root.dark .popup-paragraph,
+.app-root.dark .popup-summary-main,
+.app-root.dark .popup-summary-label,
+.app-root.dark .popup-summary-text,
+.app-root.dark .popup-result-label,
+.app-root.dark .popup-result-value,
+.app-root.dark .popup-result-value-highlight {
+  color: #e6eef6 !important; /* clean readable light-blue/white */
+}
+
+/* Highlight bubble stays readable */
+.app-root.dark .popup-result-value-highlight {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Inside the result card */
+.app-root.dark .popup-result-card {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
