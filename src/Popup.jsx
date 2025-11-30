@@ -7,14 +7,15 @@ function Popup({ message, details, onClose, tall = false }) {
   const lowerMessage = (message || "").toLowerCase();
   const isGameOver = lowerMessage.includes("game over");
   const isHowToPlay = lowerMessage.includes("how to play");
+  const isAbout = lowerMessage.includes("about");
 
-  // Default paragraphs for generic popups (e.g., About)
+  // Generic paragraphs only used when NOT game over, not how-to-play, not about
   const paragraphs =
-    !isGameOver && !isHowToPlay && details
+    !isGameOver && !isHowToPlay && !isAbout && details
       ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
       : [];
 
-  // For How to play, parse the text into structured pieces
+  // ============ HOW TO PLAY PARSING ============
   const instructionParagraphs =
     isHowToPlay && details
       ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
@@ -34,7 +35,19 @@ function Popup({ message, details, onClose, tall = false }) {
     livesText = instructionParagraphs[4] || "";
   }
 
-  // ===== Game over parsing =====
+  // ============ ABOUT PARSING ============
+  let aboutOverview = "";
+  let aboutReset = "";
+
+  if (isAbout && details) {
+    const aboutParts = details
+      .split(/\n\s*\n/)
+      .filter((p) => p.trim().length > 0);
+    aboutOverview = aboutParts[0] || "";
+    aboutReset = aboutParts[1] || "";
+  }
+
+  // ============ GAME OVER PARSING ============
   let solvedLine = "";
   let category = "";
   let oddOneOut = "";
@@ -55,25 +68,23 @@ function Popup({ message, details, onClose, tall = false }) {
       totalRows = match[2];
     }
 
-    const catLine = lines.find((l) => l.toLowerCase().startsWith("category:"));
+    const catLine = lines.find((l) =>
+      l.toLowerCase().startsWith("category:")
+    );
     const oddLine = lines.find((l) =>
       l.toLowerCase().startsWith("odd one out:")
     );
 
-    if (catLine) {
-      category = catLine.replace(/^Category:\s*/i, "");
-    }
-    if (oddLine) {
-      oddOneOut = oddLine.replace(/^Odd One Out:\s*/i, "");
-    }
+    if (catLine) category = catLine.replace(/^Category:\s*/i, "");
+    if (oddLine) oddOneOut = oddLine.replace(/^Odd One Out:\s*/i, "");
   }
 
   // Icon
   const getIcon = () => {
     if (isGameOver) return "✕";
     if (isHowToPlay) return "?";
+    if (isAbout) return "i";
     if (lowerMessage.includes("found all")) return "★";
-    if (lowerMessage.includes("about")) return "i";
     return "?";
   };
 
@@ -97,6 +108,7 @@ function Popup({ message, details, onClose, tall = false }) {
 
         {/* BODY */}
         <div className="popup-details">
+          {/* ========== GAME OVER ========== */}
           {isGameOver ? (
             <div className="popup-results">
               {solvedLine && (
@@ -138,7 +150,10 @@ function Popup({ message, details, onClose, tall = false }) {
                 </div>
               </div>
             </div>
-          ) : isHowToPlay ? (
+          ) : 
+
+          /* ========== HOW TO PLAY ========== */
+          isHowToPlay ? (
             <div className="popup-results">
               {goal && (
                 <div className="popup-summary">
@@ -147,7 +162,7 @@ function Popup({ message, details, onClose, tall = false }) {
                 </div>
               )}
 
-              <div className="popup-result-card popup-instructions-card">
+              <div className="popup-result-card">
                 {overview && (
                   <div className="popup-result-block">
                     <div className="popup-result-label">Overview</div>
@@ -170,13 +185,36 @@ function Popup({ message, details, onClose, tall = false }) {
                 )}
               </div>
             </div>
-          ) : (
-            paragraphs.map((para, idx) => (
-              <p key={idx} className="popup-paragraph">
-                {para}
-              </p>
-            ))
-          )}
+          ) :
+
+          /* ========== ABOUT ========== */
+          isAbout ? (
+            <div className="popup-results">
+              <div className="popup-summary">
+                <div className="popup-summary-label">About this game</div>
+                <div className="popup-summary-main">Daily Odd-One-Out</div>
+              </div>
+
+              <div className="popup-result-card">
+                <div className="popup-result-block">
+                  <div className="popup-result-label">Overview</div>
+                  <div className="popup-result-value">{aboutOverview}</div>
+                </div>
+
+                <div className="popup-result-block">
+                  <div className="popup-result-label">Daily reset</div>
+                  <div className="popup-result-value">{aboutReset}</div>
+                </div>
+              </div>
+            </div>
+          ) :
+
+          /* ========== OTHER (fallback) ========== */
+          paragraphs.map((para, idx) => (
+            <p key={idx} className="popup-paragraph">
+              {para}
+            </p>
+          ))}
         </div>
       </div>
     </div>
