@@ -31,7 +31,7 @@ function shuffleWithRng(array, rng) {
 }
 
 /**
- * Get "today" in America/New_York and compute a game number + seed.
+ * Get "today" in America/New_York and compute a game number.
  * Game #1 = launch day (set below). Each day after increments by 1.
  */
 function getGameInfo() {
@@ -51,24 +51,35 @@ function getGameInfo() {
 
   const estToday = new Date(year, month - 1, day);
 
-  // Launch date = Game #1 (month is 0-based, so 10 = November)
-  const launchDate = new Date(2025, 10, 21);
+  // Launch date = Game #1 (month is 0-based, so 10 = November) 
+  const launchDate = new Date(2025, 11, 30);
   const oneDayMs = 24 * 60 * 60 * 1000;
   const diffDays = Math.floor((estToday - launchDate) / oneDayMs);
 
   const baseGameNumber = 1;
   const gameNumber = baseGameNumber + Math.max(diffDays, 0);
-  const seed = gameNumber;
 
-  return { gameNumber, seed };
+  return { gameNumber };
 }
 
-function buildRows(seed) {
-  const rng = mulberry32(seed);
-
+/**
+ * Build today's rows by walking down the word bank.
+ * Day 1 => games[0..3], Day 2 => games[4..7], etc.
+ */
+function buildRows(gameNumber) {
   const allGames = [...wordBank.games];
-  const shuffledGames = shuffleWithRng(allGames, rng);
-  const selected = shuffledGames.slice(0, ROWS_PER_GAME);
+
+  const startIndex = (gameNumber - 1) * ROWS_PER_GAME;
+  let selected = allGames.slice(startIndex, startIndex + ROWS_PER_GAME);
+
+  // If we ever run out of data (e.g., not enough rows),
+  // fall back to the first 4 as a safety.
+  if (selected.length < ROWS_PER_GAME) {
+    selected = allGames.slice(0, ROWS_PER_GAME);
+  }
+
+  // Use a seeded RNG based on gameNumber to shuffle cards
+  const rng = mulberry32(gameNumber);
 
   return selected.map((g) => {
     const cards = shuffleWithRng(
@@ -93,9 +104,9 @@ function buildRows(seed) {
 }
 
 function App() {
-  const { gameNumber, seed } = getGameInfo();
+  const { gameNumber } = getGameInfo();
 
-  const [rows, setRows] = useState(() => buildRows(seed));
+  const [rows, setRows] = useState(() => buildRows(gameNumber));
   const [mistakesLeft, setMistakesLeft] = useState(MAX_MISTAKES);
   const [message, setMessage] = useState("");
   const [gameOver, setGameOver] = useState(false);
