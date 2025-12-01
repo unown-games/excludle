@@ -49,10 +49,9 @@ function getGameInfo() {
   const month = Number(parts.find((p) => p.type === "month").value);
   const day = Number(parts.find((p) => p.type === "day").value);
 
-  const estToday = new Date(year, month - 1, day);
+  const estToday = new Date(year, month, day);
 
-  // Launch date = Game #1 (month is 0-based, so 10 = November) 
-  const launchDate = new Date(2025, 11, 30);
+  const launchDate = new Date(2025, 12, 1);
   const oneDayMs = 24 * 60 * 60 * 1000;
   const diffDays = Math.floor((estToday - launchDate) / oneDayMs);
 

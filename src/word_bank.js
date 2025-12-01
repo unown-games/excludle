@@ -435,7 +435,79 @@ const wordBank = {
       "word2": "Macaroni",
       "word3": "Crackers",
       "word4": "Broccoli Soup",
-      "imposter": "Steak"
+      "imposter": "Chocolate"
+    },
+    {
+      "category": "Words that are the same in Spanish and English",
+      "word1": "Animal",
+      "word2": "Hospital",
+      "word3": "Chocolate",
+      "word4": "Actor",
+      "imposter": "Diary"
+    },
+    {
+      "category": "Types of clouds",
+      "word1": "Cumulus",
+      "word2": "Stratus",
+      "word3": "Cirrus",
+      "word4": "Nimbus",
+      "imposter": "Horizons"
+    },
+    {
+      "category": "Famous painters",
+      "word1": "Picasso",
+      "word2": "Da Vinci",
+      "word3": "Van Gogh",
+      "word4": "Rembrandt",
+      "imposter": "Beethoven"
+    },
+    {
+      "category": "Musical instruments with strings",
+      "word1": "Guitar",
+      "word2": "Violin",
+      "word3": "Harp",
+      "word4": "Cello",
+      "imposter": "Drums"
+    },
+    {
+      "category": "Countries in Africa",
+      "word1": "Nigeria",
+      "word2": "Kenya",
+      "word3": "Egypt",
+      "word4": "Ghana",
+      "imposter": "Brazil"
+    },
+    {
+      "category": "Brands owned by PepsiCo",
+      "word1": "Lay's",
+      "word2": "Gatorade",
+      "word3": "Quaker Oats",
+      "word4": "Tropicana",
+      "imposter": "Sprite"
+    },
+    {
+      "category": "Famous bridges",
+      "word1": "Golden Gate",
+      "word2": "Brooklyn",
+      "word3": "London",
+      "word4": "Sydney Harbour",
+      "imposter": "Eiffel Tower"
+    },
+    {
+      "category": "Common fire starters",
+      "word1": "Matches",
+      "word2": "Wood",
+      "word3": "Flint",
+      "word4": "Magnifying Glass",
+      "imposter": "Steel"
+    },
+    {
+      "category": "Words that sound like letters",
+      "word1": "Sea",
+      "word2": "Jay",
+      "word3": "Tea",
+      "word4": "You",
+      "imposter": "Lea"
     }
   ]
 };
