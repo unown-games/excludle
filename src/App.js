@@ -111,6 +111,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [finishedAllRows, setFinishedAllRows] = useState(false);
   const [currentCategory, setCurrentCategory] = useState("");
+  const [categoryRowIndex, setCategoryRowIndex] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupDetails, setPopupDetails] = useState("");
@@ -159,6 +160,7 @@ function App() {
           };
 
           setCurrentCategory(row.category);
+          setCategoryRowIndex(rowIndex);
 
           const tempRows = prevRows.map((r, i2) =>
             i2 === rowIndex ? updatedRow : r
@@ -218,6 +220,7 @@ function App() {
             setShowPopup(true);
             // keep the category visible on loss so the yellow banner still shows
             setCurrentCategory(lostCategory);
+            setCategoryRowIndex(rowIndex);
           } else {
             setMessage("Nope. Try a different option in this row.");
           }
@@ -318,14 +321,6 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
 
           {/* BOARD: category banner + rows */}
           <div className="board">
-            {currentCategory && (
-              <div className="category-banner" key={currentCategory}>
-                <h2 className="category-banner-title">
-                  {"Category: " + currentCategory}
-                </h2>
-              </div>
-            )}
-
             <div className="rows-container">
               {rows.map((row, rowIndex) => {
                 const isActive =
@@ -337,8 +332,19 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
                   rowIndex > activeRowIndex &&
                   !finishedAllRows;
 
+                // Show category banner if it's the current active one, or if game is over/finished and row is solved
+                const showCategoryBanner = (currentCategory && categoryRowIndex === rowIndex) || 
+                                          ((gameOver || finishedAllRows) && row.solved);
+
                 return (
                   <section key={rowIndex} className="row-block">
+                    {showCategoryBanner && (
+                      <div className="category-banner" key={`${rowIndex}-${row.category}`}>
+                        <h2 className="category-banner-title">
+                          {"Category: " + row.category}
+                        </h2>
+                      </div>
+                    )}
                     <div className="cards-row">
                       {row.cards.map((card, cardIndex) => {
                         const isSelected = row.selectedIndex === cardIndex;
