@@ -137,12 +137,12 @@
   left: 2%;
   top: 8px;
   width: 92%;
-  background: rgba(249, 223, 109, 0.91);
+  background: rgba(249, 223, 109, 0.95);
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
   z-index: 10;
-  animation: categorySlideIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: categorySlideIn 1.2s cubic-bezier(0.34, 1, 0.64, 1) forwards;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }

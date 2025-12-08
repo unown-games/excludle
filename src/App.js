@@ -5,6 +5,7 @@ import Popup from "./Popup";
 
 const ROWS_PER_GAME = 4;
 const MAX_MISTAKES = 3;
+const USE_CACHING = true; // Toggle to false to disable caching for testing
 
 /**
  * Simple seeded RNG (Mulberry32)
@@ -102,22 +103,85 @@ function buildRows(gameNumber) {
   });
 }
 
+/**
+ * Get the cached game state from localStorage
+ */
+function getCachedGameState(gameNumber) {
+  if (!USE_CACHING) return null;
+  try {
+    const cached = localStorage.getItem(`excludle_game_${gameNumber}`);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+  } catch (e) {
+    console.error("Error reading from localStorage:", e);
+  }
+  return null;
+}
+
+/**
+ * Save the game state to localStorage
+ */
+function saveGameState(gameNumber, state) {
+  if (!USE_CACHING) return;
+  try {
+    localStorage.setItem(`excludle_game_${gameNumber}`, JSON.stringify(state));
+  } catch (e) {
+    console.error("Error writing to localStorage:", e);
+  }
+}
+
 function App() {
   const { gameNumber } = getGameInfo();
 
-  const [rows, setRows] = useState(() => buildRows(gameNumber));
-  const [mistakesLeft, setMistakesLeft] = useState(MAX_MISTAKES);
-  const [message, setMessage] = useState("");
-  const [gameOver, setGameOver] = useState(false);
-  const [finishedAllRows, setFinishedAllRows] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState("");
-  const [categoryRowIndex, setCategoryRowIndex] = useState(null);
+  // Initialize state from cache or defaults
+  const cachedState = getCachedGameState(gameNumber);
+  
+  const [rows, setRows] = useState(() => 
+    cachedState ? cachedState.rows : buildRows(gameNumber)
+  );
+  const [mistakesLeft, setMistakesLeft] = useState(
+    cachedState ? cachedState.mistakesLeft : MAX_MISTAKES
+  );
+  const [message, setMessage] = useState(
+    cachedState && cachedState.completed ? "You solved all 4 rows!" : ""
+  );
+  const [gameOver, setGameOver] = useState(cachedState ? cachedState.gameOver : false);
+  const [finishedAllRows, setFinishedAllRows] = useState(cachedState ? cachedState.finishedAllRows : false);
+  const [currentCategory, setCurrentCategory] = useState(cachedState ? (cachedState.currentCategory || "") : "");
+  const [categoryRowIndex, setCategoryRowIndex] = useState(
+    cachedState ? (cachedState.categoryRowIndex !== undefined ? cachedState.categoryRowIndex : null) : null
+  );
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupDetails, setPopupDetails] = useState("");
 
   const [showMenu, setShowMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  
+  // Handle closing the popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+  
+  // If game was already completed or in progress, show appropriate UI on mount
+  React.useEffect(() => {
+    if (cachedState) {
+      if (cachedState.completed || cachedState.finishedAllRows) {
+        let details = `It took you ${cachedState.totalClicks} clicks.`;
+        if (cachedState.isPerfect) {
+          details += "\nPerfect Game!";
+        }
+        setPopupMessage("You found all the imposters!");
+        setPopupDetails(details);
+        setShowPopup(true);
+      } else if (cachedState.gameOver) {
+        setPopupMessage("Game over");
+        setPopupDetails(cachedState.popupDetails || "");
+        setShowPopup(true);
+      }
+    }
+  }, []);
 
   const activeRowIndex = rows.findIndex((r) => !r.solved);
 
@@ -143,7 +207,10 @@ function App() {
     if (rowIndex !== activeRowIndex) return;
 
     setRows((prevRows) => {
-      const newRows = prevRows.map((row, idx) => {
+      let newRows = prevRows;
+      let newMistakesValue = mistakesLeft;
+
+      const newRows2 = prevRows.map((row, idx) => {
         if (idx !== rowIndex) return row;
 
         const card = row.cards[cardIndex];
@@ -165,6 +232,7 @@ function App() {
           const tempRows = prevRows.map((r, i2) =>
             i2 === rowIndex ? updatedRow : r
           );
+          newRows = tempRows;
           const allSolved = tempRows.every((r) => r.solved);
 
           if (allSolved) {
@@ -184,8 +252,32 @@ function App() {
             setPopupDetails(details);
             setShowPopup(true);
             setMessage("You solved all 4 rows!");
+            
+            // Cache the full game state with completion info
+            saveGameState(gameNumber, {
+              rows: tempRows,
+              mistakesLeft: mistakesLeft,
+              currentCategory: row.category,
+              categoryRowIndex: rowIndex,
+              completed: true,
+              finishedAllRows: true,
+              gameOver: false,
+              totalClicks: totalClicks,
+              isPerfect: totalClicks === ROWS_PER_GAME,
+              popupDetails: details
+            });
           } else {
             setMessage("Nice! Move on to the next row.");
+            // Cache the current progress
+            saveGameState(gameNumber, {
+              rows: tempRows,
+              mistakesLeft: mistakesLeft,
+              currentCategory: row.category,
+              categoryRowIndex: rowIndex,
+              completed: false,
+              finishedAllRows: false,
+              gameOver: false
+            });
           }
 
           return updatedRow;
@@ -197,6 +289,7 @@ function App() {
           };
 
           const newMistakes = mistakesLeft - 1;
+          newMistakesValue = newMistakes;
           setMistakesLeft(newMistakes);
 
           if (newMistakes <= 0) {
@@ -210,26 +303,48 @@ function App() {
             const lostImposter =
               row.cards.find((c) => c.isImposter)?.text || "";
 
-            setPopupMessage("Game over");
-            setPopupDetails(
+            const popupDetailsText =
               `You solved ${correctRows} of ${ROWS_PER_GAME} rows.\n\n` +
-                `Category: ${lostCategory}\n\n` +
-                `Odd One Out: ${lostImposter}`
-            );
+              `Category: ${lostCategory}\n\n` +
+              `Odd One Out: ${lostImposter}`;
 
+            setPopupMessage("Game over");
+            setPopupDetails(popupDetailsText);
             setShowPopup(true);
             // keep the category visible on loss so the yellow banner still shows
             setCurrentCategory(lostCategory);
             setCategoryRowIndex(rowIndex);
+            
+            // Cache the game over state with the updated rows from the map
+            saveGameState(gameNumber, {
+              rows: prevRows.map((r, i) => i === rowIndex ? updatedRow : r),
+              mistakesLeft: newMistakes,
+              currentCategory: lostCategory,
+              categoryRowIndex: rowIndex,
+              completed: false,
+              finishedAllRows: false,
+              gameOver: true,
+              popupDetails: popupDetailsText
+            });
           } else {
             setMessage("Nope. Try a different option in this row.");
+            // Cache the current progress with the updated rows from the map
+            saveGameState(gameNumber, {
+              rows: prevRows.map((r, i) => i === rowIndex ? updatedRow : r),
+              mistakesLeft: newMistakes,
+              currentCategory: currentCategory,
+              categoryRowIndex: categoryRowIndex,
+              completed: false,
+              finishedAllRows: false,
+              gameOver: false
+            });
           }
 
           return updatedRow;
         }
       });
 
-      return newRows;
+      return newRows2;
     });
   };
 
@@ -399,7 +514,7 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
         <Popup
           message={popupMessage}
           details={popupDetails}
-          onClose={() => setShowPopup(false)}
+          onClose={handleClosePopup}
           tall={popupMessage && /game over|how to play/i.test(popupMessage)}
         />
       )}
