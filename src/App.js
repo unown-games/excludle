@@ -5,7 +5,7 @@ import Popup from "./Popup";
 
 const ROWS_PER_GAME = 4;
 const MAX_MISTAKES = 3;
-const USE_CACHING = true; // Toggle to false to disable caching for testing
+const USE_CACHING = false; // Toggle to false to disable caching for testing
 
 /**
  * Simple seeded RNG (Mulberry32)
@@ -391,7 +391,9 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
           {/* HEADER: title + menu + subtitle */}
           <header className="header">
             <div className="header-top">
-              <h1 className="game-title">Excludle</h1>
+              <h1 className="game-title">
+                Exclu<span className="green-d">d</span>le
+              </h1>
 
               <button
                 className="menu-button"
