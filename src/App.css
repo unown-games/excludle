@@ -35,7 +35,7 @@
 }
 
 .game-title {
-  font-size: 61px;
+  font-size: 60px;
   font-weight: 700;
   margin: 0;
   line-height: 1.1;
@@ -43,16 +43,71 @@
   display: inline-block;
 }
 
+.game-title .letter-x {
+  display: inline-block;
+  animation: xBounce 3s ease-in-out forwards;
+}
+
 .game-title .green-d {
   color: #6ba854;
   position: relative;
-  top: -8px;
-  font-size: 1.15em;
+  display: inline-block;
+  animation: dRaise 3s ease-in-out forwards;
+}
+
+@keyframes xBounce {
+  0% {
+    transform: translateY(0);
+    color: #111827;
+  }
+  15% {
+    transform: translateY(-8px);
+    color: #111827;
+  }
+  30% {
+    transform: translateY(-8px);
+    color: #ef4444;
+  }
+  45% {
+    transform: translateY(-8px);
+    color: #ef4444;
+  }
+  50% {
+    transform: translateY(-8px);
+    color: #ef4444;
+  }
+  65% {
+    transform: translateY(0);
+    color: #111827;
+  }
+  100% {
+    transform: translateY(0);
+    color: #111827;
+  }
+}
+
+@keyframes dRaise {
+  0%, 50% {
+    transform: translateY(0);
+    color: #111827;
+  }
+  65% {
+    transform: translateY(-8px);
+    color: #111827;
+  }
+  80% {
+    transform: translateY(-8px);
+    color: #6ba854;
+  }
+  100% {
+    transform: translateY(-8px);
+    color: #6ba854;
+  }
 }
 
 .subtitle {
   margin-top: 4px;
-  font-size: 15px;
+  font-size: 14px;
   color: #6b7280;
 }
 
@@ -376,7 +431,7 @@
   color: #e6eef6;
 }
 
-.app-root.dark {
+.app-root.dark .game-title {
   color: #e6eef6;
 }
 
@@ -437,4 +492,71 @@
 
 .app-root.dark .footer-bar {
   border-top: none;
+}
+
+.app-root.dark .game-title::after {
+  background: #e6eef6;
+}
+
+.app-root.dark .game-title .letter-x {
+  color: #e6eef6;
+}
+
+.app-root.dark .game-title .green-d {
+  color: #6ba854;
+}
+
+/* Override x animation colors for dark mode */
+.app-root.dark .game-title .letter-x {
+  animation: xBounceDark 3s ease-in-out forwards;
+}
+
+.app-root.dark .game-title .green-d {
+  animation: dRaiseDark 3s ease-in-out forwards;
+}
+
+@keyframes xBounceDark {
+  0% {
+    transform: translateY(0);
+    color: #e6eef6;
+  }
+  15% {
+    transform: translateY(-8px);
+    color: #e6eef6;
+  }
+  30% {
+    transform: translateY(-8px);
+    color: #ef4444;
+  }
+  45% {
+    transform: translateY(0);
+    color: #ef4444;
+  }
+  50% {
+    transform: translateY(0);
+    color: #e6eef6;
+  }
+  100% {
+    transform: translateY(0);
+    color: #e6eef6;
+  }
+}
+
+@keyframes dRaiseDark {
+  0%, 50% {
+    transform: translateY(0);
+    color: #e6eef6;
+  }
+  65% {
+    transform: translateY(-8px);
+    color: #e6eef6;
+  }
+  80% {
+    transform: translateY(-8px);
+    color: #6ba854;
+  }
+  100% {
+    transform: translateY(-8px);
+    color: #6ba854;
+  }
 }
