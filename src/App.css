@@ -149,6 +149,16 @@
   z-index: 20;
 }
 
+/* On mobile, position menu to the left of the button */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 .dropdown-item {
   width: 100%;
   padding: 8px 14px;
@@ -198,10 +208,11 @@
 
 .category-banner {
   position: absolute;
-  left: 2%;
-  top: 8px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 92%;
-  background: rgba(249, 223, 109, 0.95);
+  background: rgba(249, 223, 109, 0.97);
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
@@ -226,11 +237,11 @@
 
 @keyframes categorySlideIn {
   from {
-    transform: translateX(-100%);
+    transform: translate(-150%, -50%);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translate(-50%, -50%);
     opacity: 0.85;
   }
 }
