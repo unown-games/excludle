@@ -281,7 +281,7 @@ const wordBank = {
       "category": "Funny Person",
       "word1": "Clown",
       "word2": "Joker",
-      "word3": "Laugh",
+      "word3": "Comedian",
       "word4": "Riot",
       "imposter": "Scene"
     },
