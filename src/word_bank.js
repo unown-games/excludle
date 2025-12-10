@@ -328,7 +328,7 @@ const wordBank = {
       "imposter": "Cloud"
     },
     {
-      "category": "____ Ring",
+      "category": "______ Ring",
       "word1": "Engagement",
       "word2": "Boxing",
       "word3": "Oura",
@@ -508,6 +508,70 @@ const wordBank = {
       "word3": "Tea",
       "word4": "You",
       "imposter": "Lea"
+    },
+    {
+      "category": "Things that hold money",
+      "word1": "Wallet",
+      "word2": "Purse",
+      "word3": "Piggy",
+      "word4": "Bank",
+      "imposter": "Book"
+    },
+    {
+      "category": "Cities in Ohio",
+      "word1": "Dayton",
+      "word2": "Cleveland",
+      "word3": "Cincinnati",
+      "word4": "Toledo",
+      "imposter": "Chicago"
+    },
+    {
+      "category": "Mr _______",
+      "word1": "Bean",
+      "word2": "T",
+      "word3": "Rogers",
+      "word4": "Clean",
+      "imposter": "Keen"
+    },
+    {
+      "category": "Hats",
+      "word1": "Fedora",
+      "word2": "Beanie",
+      "word3": "Bowler",
+      "word4": "Cap",
+      "imposter": "Scarf"
+    },
+    {
+      "category": "Things that you throw",
+      "word1": "Game",
+      "word2": "Ball",
+      "word3": "Frisbee",
+      "word4": "Fit",
+      "imposter": "Puck"
+    },
+    {
+      "category": "Words with silent letters",
+      "word1": "Knee",
+      "word2": "Knife",
+      "word3": "Wrist",
+      "word4": "Island",
+      "imposter": "Never"
+    },
+    {
+      "category": "German Car Brands",
+      "word1": "BMW",
+      "word2": "Mercedes",
+      "word3": "Audi",
+      "word4": "Volkswagen",
+      "imposter": "Toyota"
+    },
+    {
+      "category": "Anime main characters",
+      "word1": "Naruto",
+      "word2": "Goku",
+      "word3": "Luffy",
+      "word4": "Sailor Moon",
+      "imposter": "Mario"
     }
   ]
 };
