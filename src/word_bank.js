@@ -320,7 +320,7 @@ const wordBank = {
       "imposter": "Sitcom"
     },
     {
-      "category": "Thigns followed by Sweet",
+      "category": "Things followed by Sweet",
       "word1": "Dreams",
       "word2": "Potato",
       "word3": "Tooth",
