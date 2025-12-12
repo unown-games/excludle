@@ -52,7 +52,7 @@ function getGameInfo() {
 
   const estToday = new Date(year, month, day);
 
-  const launchDate = new Date(2025, 12, 1);
+  const launchDate = new Date(2025, 12, 12);
   const oneDayMs = 24 * 60 * 60 * 1000;
   const diffDays = Math.floor((estToday - launchDate) / oneDayMs);
 

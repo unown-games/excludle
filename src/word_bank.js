@@ -4,14 +4,13 @@
 
 const wordBank = {
   games: [
-    // ===== Day 1 =====
     {
-      "category": "Dry _____",
-      "word1": "Ice",
-      "word2": "Erase Marker",
-      "word3": "Rot",
-      "word4": "Socket",
-      "imposter": "Pie"
+      "category": "High _____",
+      "word1": "School",
+      "word2": "Five",
+      "word3": "Quality",
+      "word4": "Ground",
+      "imposter": "Banana"
     },
     {
       "category": "Types of races",
@@ -30,15 +29,14 @@ const wordBank = {
       "imposter": "League"
     },
     {
-      "category": "Things that can be pickled",
+      "category": "Things that are pickled",
       "word1": "Cucumbers",
       "word2": "Plum",
       "word3": "Peppers",
-      "word4": "Mango",
+      "word4": "Onion",
       "imposter": "Apple"
     },
 
-    // ===== Day 2 =====
     {
       "category": "Soft _____",
       "word1": "Drink",
@@ -72,15 +70,6 @@ const wordBank = {
       "imposter": "Platinum"
     },
 
-    // ===== Day 3 =====
-    {
-      "category": "Deep _____",
-      "word1": "End",
-      "word2": "Sleep",
-      "word3": "Dive",
-      "word4": "Fryer",
-      "imposter": "Ticket"
-    },
     {
       "category": "Cold _____",
       "word1": "Brew",
@@ -90,14 +79,6 @@ const wordBank = {
       "imposter": "Corner"
     },
     {
-      "category": "Light _____",
-      "word1": "Bulb",
-      "word2": "Year",
-      "word3": "Rail",
-      "word4": "Touch",
-      "imposter": "Paper"
-    },
-    {
       "category": "Things that can be rolled",
       "word1": "Dough",
       "word2": "Sleeves",
@@ -105,8 +86,6 @@ const wordBank = {
       "word4": "Dice",
       "imposter": "Sand"
     },
-
-    // ===== Day 4 =====
     {
       "category": "Words that end in R",
       "word1": "Marker",
@@ -123,6 +102,7 @@ const wordBank = {
       "word4": "Rock",
       "imposter": "Metal"
     },
+
     {
       "category": "Colors with one letter changed",
       "word1": "Rad",
@@ -132,6 +112,14 @@ const wordBank = {
       "imposter": "Cool"
     },
     {
+      "category": "Light _____",
+      "word1": "Bulb",
+      "word2": "Year",
+      "word3": "Rail",
+      "word4": "Touch",
+      "imposter": "Paper"
+    },
+    {
       "category": "Things you do on the road",
       "word1": "Pass",
       "word2": "Stop",
@@ -139,8 +127,6 @@ const wordBank = {
       "word4": "Drive",
       "imposter": "Throw"
     },
-
-    // ===== Day 5 =====
     {
       "category": "Things used to melt ice",
       "word1": "Salt",
@@ -149,6 +135,7 @@ const wordBank = {
       "word4": "Hair Dryer",
       "imposter": "Earth"
     },
+
     {
       "category": "\"The\" bands",
       "word1": "Police",
@@ -173,8 +160,6 @@ const wordBank = {
       "word4": "Cruise",
       "imposter": "Pool"
     },
-
-    // ===== Day 6 =====
     {
       "category": "____ gram",
       "word1": "Tele",
@@ -183,6 +168,7 @@ const wordBank = {
       "word4": "Ana",
       "imposter": "Top"
     },
+
     {
       "category": "Words in Disney Pixar movies",
       "word1": "Monsters",
@@ -192,7 +178,7 @@ const wordBank = {
       "imposter": "Creatures"
     },
     {
-      "category": "Words that are commonly followed by numbers",
+      "category": "Words commonly followed by numbers",
       "word1": "High",
       "word2": "Fantastic",
       "word3": "Cloud",
@@ -207,8 +193,6 @@ const wordBank = {
       "word4": "Lavalier",
       "imposter": "Corset"
     },
-
-    // ===== Day 7 =====
     {
       "category": "Cocktails",
       "word1": "Cosmopolitan",
@@ -216,6 +200,15 @@ const wordBank = {
       "word3": "Screwdriver",
       "word4": "Sea Breeze",
       "imposter": "Boxset"
+    },
+
+    {
+      "category": "Deep _____",
+      "word1": "End",
+      "word2": "Sleep",
+      "word3": "Dive",
+      "word4": "Fryer",
+      "imposter": "Ticket"
     },
     {
       "category": "Adhere",
@@ -242,7 +235,6 @@ const wordBank = {
       "imposter": "Gum"
     },
 
-    // ===== Day 8 =====
     {
       "category": "Words That Sound Like Two Letters",
       "word1": "Any",
@@ -276,7 +268,6 @@ const wordBank = {
       "imposter": "Kidney"
     },
 
-    // ===== Day 9 =====
     {
       "category": "Funny Person",
       "word1": "Clown",
@@ -310,7 +301,6 @@ const wordBank = {
       "imposter": "Pivot"
     },
 
-    // ===== Day 10 =====
     {
       "category": "Starting With Synonyms For \"Scram!\"",
       "word1": "Go-Getter",
@@ -328,7 +318,7 @@ const wordBank = {
       "imposter": "Cloud"
     },
     {
-      "category": "____ Ring",
+      "category": "_____ Ring",
       "word1": "Engagement",
       "word2": "Boxing",
       "word3": "Oura",
@@ -344,7 +334,6 @@ const wordBank = {
       "imposter": "Plan"
     },
 
-    // ===== Day 11 =====
     {
       "category": "Sports where you hold a stick",
       "word1": "Baseball",
@@ -378,7 +367,6 @@ const wordBank = {
       "imposter": "BTW"
     },
 
-    // ===== Day 12 =====
     {
       "category": "Things that have scales",
       "word1": "Fish",
@@ -412,7 +400,6 @@ const wordBank = {
       "imposter": "The Lion King"
     },
 
-    // ===== Day 13 (currently partial – only 3 used before fallback) =====
     {
       "category": "USA Capital Cities",
       "word1": "Albany",
@@ -445,6 +432,7 @@ const wordBank = {
       "word4": "Actor",
       "imposter": "Diary"
     },
+
     {
       "category": "Types of clouds",
       "word1": "Cumulus",
@@ -477,6 +465,7 @@ const wordBank = {
       "word4": "Ghana",
       "imposter": "Brazil"
     },
+
     {
       "category": "Brands owned by PepsiCo",
       "word1": "Lay's",
@@ -508,6 +497,138 @@ const wordBank = {
       "word3": "Tea",
       "word4": "You",
       "imposter": "Lea"
+    },
+
+    {
+      "category": "Arm muscles",
+      "word1": "Biceps",
+      "word2": "Triceps",
+      "word3": "Deltoids",
+      "word4": "Forearm",
+      "imposter": "Quadriceps"
+    },
+    {
+      "category": "_____ box",
+      "word1": "Match",
+      "word2": "Sand",
+      "word3": "Lunch",
+      "word4": "Juke",
+      "imposter": "Lighter"
+    },
+    {
+      "category": "Words with double consonants",
+      "word1": "Ballet",
+      "word2": "Address",
+      "word3": "Occur",
+      "word4": "Coffee",
+      "imposter": "Purse"
+    },
+    {
+      "category": "Hot _____",
+      "word1": "Chocolate",
+      "word2": "Dog",
+      "word3": "Take",
+      "word4": "Tub",
+      "imposter": "Paper"
+    },
+
+    {
+      "category": "Lil rappers",
+      "word1": "Wayne",
+      "word2": "Baby",
+      "word3": "Pump",
+      "word4": "Yachty",
+      "imposter": "Polo"
+    },
+    {
+      "category": "Environmentally friendly",
+      "word1": "Cycling",
+      "word2": "Walking",
+      "word3": "Scootering",
+      "word4": "Busing",
+      "imposter": "Driving"
+    },
+    {
+      "category": "Words that don't exist",
+      "word1": "Wrorp",
+      "word2": "Knorg",
+      "word3": "Glimt",
+      "word4": "Tronf",
+      "imposter": "Plural"
+    },
+    {
+      "category": "Keyboard keys",
+      "word1": "Enter",
+      "word2": "Shift",
+      "word3": "Option",
+      "word4": "Alt",
+      "imposter": "Confirm"
+    },
+
+    {
+      "category": "Minecraft wood",
+      "word1": "Oak",
+      "word2": "Birch",
+      "word3": "Spruce",
+      "word4": "Jungle",
+      "imposter": "Pine"
+    },
+    {
+      "category": "_____ wave",
+      "word1": "Micro",
+      "word2": "Heat",
+      "word3": "Sound",
+      "word4": "Shock",
+      "imposter": "Max"
+    },
+    {
+      "category": "Laundry day",
+      "word1": "Hamper",
+      "word2": "Detergent",
+      "word3": "Sheets",
+      "word4": "Bleach",
+      "imposter": "Cart"
+    },
+    {
+      "category": "London staples",
+      "word1": "Queen",
+      "word2": "Guard",
+      "word3": "Ferris Wheel",
+      "word4": "Phone Booth",
+      "imposter": "President"
+    },
+
+    {
+      "category": "_____ board",
+      "word1": "Snow",
+      "word2": "Cutting",
+      "word3": "Surf",
+      "word4": "Ironing",
+      "imposter": "Basket"
+    },
+    {
+      "category": "New Years resolutions",
+      "word1": "Exercise",
+      "word2": "Diet",
+      "word3": "Walk",
+      "word4": "Travel",
+      "imposter": "Procrastinate"
+    },
+    {
+      "category": "Sarcastic insults",
+      "word1": "Genuis",
+      "word2": "Wise Guy",
+      "word3": "Sherlock",
+      "word4": "Smart Alec",
+      "imposter": "Intellect"
+    },
+    {
+      "category": "Smartwatch data",
+      "word1": "Steps",
+      "word2": "Calories",
+      "word3": "Heart Rate",
+      "word4": "Distance",
+      "imposter": "Blood Pressure"
     }
   ]
 };
