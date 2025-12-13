@@ -62,7 +62,7 @@ const wordBank = {
       "imposter": "Lettuce"
     },
     {
-      "category": "Things that can be measured in karats",
+      "category": "Measured in karats",
       "word1": "Diamonds",
       "word2": "Sapphires",
       "word3": "Rubies",
