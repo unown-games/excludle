@@ -287,7 +287,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding: 3px 2px;
   text-align: center;
   cursor: pointer;
   font-size: 16px;
@@ -296,6 +296,12 @@
   letter-spacing: 0.02em;
   transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease,
     color 0.08s ease, opacity 0.08s ease;
+  font-size: clamp(7px, 1.2vw, 16px);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.02em;
 }
 
 .card:hover {
@@ -418,7 +424,8 @@
 
   .card {
     height: 60px;
-    font-size: 14px;
+    font-size: clamp(6px, 2.4vw, 11px);
+    padding: 3px 2px;
   }
 
   /* DON'T STACK FOOTER */
