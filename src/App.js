@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import wordBank from "./word_bank";
 import Popup from "./Popup";
+import LockIcon from "./LockIcon";
 
 const ROWS_PER_GAME = 4;
 const MAX_MISTAKES = 3;
@@ -395,6 +396,26 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
     setShowMenu(false);
   };
 
+  const handleShowPrivacy = () => {
+    setShowMenu(false);
+
+    const privacyPolicy = `Excludle is designed to be a lightweight daily puzzle. We do not ask you to create an account or submit personal information to play.
+
+Saved progress: Your puzzle history, remaining lives, and theme preference are stored only in your browser's local storage so you can resume a game later.
+
+Cookies & ads: We display third-party ads (Google AdSense) that may set cookies or similar technologies to deliver and measure advertising. Refer to Google's policies for details on how they process that data.
+
+Analytics & diagnostics: We may collect aggregated, anonymous usage metrics (such as error logs or device type) to keep the experience stable and improve the game. These metrics cannot identify you individually.
+
+Children: Excludle is a casual word puzzle but is not directed at children under 13, and we do not knowingly collect information from them.
+
+Questions or requests: Contact the developer at privacy@excludle.com and we will respond as soon as possible.`;
+
+    setPopupMessage("Privacy Policy");
+    setPopupDetails(privacyPolicy);
+    setShowPopup(true);
+  };
+
   return (
     <div className={`app-root ${darkMode ? "dark" : ""}`}>
       <main className="game-container">
@@ -423,10 +444,6 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
                     <span className="dropdown-icon">?</span>
                     <span className="dropdown-label">How to play</span>
                   </button>
-                  <button className="dropdown-item" onClick={handleShowAbout}>
-                    <span className="dropdown-icon">i</span>
-                    <span className="dropdown-label">About</span>
-                  </button>
                   <button
                     className="dropdown-item"
                     onClick={handleToggleDarkMode}
@@ -437,6 +454,19 @@ Each day at midnight (US Eastern Time), a new set of rows and categories appears
                     <span className="dropdown-label">
                       {darkMode ? "Light mode" : "Dark mode"}
                     </span>
+                  </button>
+                  <button className="dropdown-item" onClick={handleShowAbout}>
+                    <span className="dropdown-icon">i</span>
+                    <span className="dropdown-label">About</span>
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={handleShowPrivacy}
+                  >
+                    <span className="dropdown-icon">
+                      <LockIcon size="sm" />
+                    </span>
+                    <span className="dropdown-label">Privacy Policy</span>
                   </button>
                 </div>
               )}

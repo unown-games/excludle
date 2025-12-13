@@ -1,5 +1,6 @@
 import React from "react";
 import "./Popup.css";
+import LockIcon from "./LockIcon";
 
 function Popup({ message, details, onClose, tall = false }) {
   const stopClick = (e) => e.stopPropagation();
@@ -8,6 +9,7 @@ function Popup({ message, details, onClose, tall = false }) {
   const isGameOver = lowerMessage.includes("game over");
   const isHowToPlay = lowerMessage.includes("how to play");
   const isAbout = lowerMessage.includes("about");
+  const isPrivacy = lowerMessage.includes("privacy");
   const isWin =
     !isGameOver &&
     (lowerMessage.includes("found all") ||
@@ -153,7 +155,9 @@ function Popup({ message, details, onClose, tall = false }) {
         {/* HEADER */}
         <div className="popup-header">
           <div className="popup-title-group">
-            <div className="popup-icon">{getIcon()}</div>
+            <div className={`popup-icon ${isPrivacy ? "popup-icon-lock" : ""}`}>
+              {isPrivacy ? <LockIcon size="lg" /> : getIcon()}
+            </div>
             <h2 className="popup-message">{message}</h2>
           </div>
 
