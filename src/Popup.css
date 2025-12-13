@@ -191,6 +191,30 @@
   color: #b91c1c;
 }
 
+.popup-result-card-win {
+  border: 1px solid #d9f99d;
+  background: #f7fee7;
+}
+
+.popup-perfect-banner {
+  text-align: center;
+  background: #bbf7d0;
+  color: #065f46;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.popup-result-value-hearts {
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: #ef4444;
+}
+
+.popup-heart {
+  display: inline-block;
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .popup-content {
@@ -259,6 +283,20 @@
   color: #fecaca;
 }
 
+.app-root.dark .popup-result-card-win {
+  background: rgba(5, 68, 94, 0.45);
+  border-color: rgba(190, 242, 100, 0.4);
+}
+
+.app-root.dark .popup-perfect-banner {
+  background: rgba(34, 197, 94, 0.2);
+  color: #bef264;
+}
+
+.app-root.dark .popup-result-value-hearts {
+  color: #f87171;
+}
+
 /* ================================ */
 /* 🔧 Improve popup readability in dark mode */
 /* ================================ */
@@ -283,4 +321,3 @@
 .app-root.dark .popup-result-card {
   background: rgba(255, 255, 255, 0.06) !important;
 }
-

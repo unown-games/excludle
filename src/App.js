@@ -131,6 +131,20 @@ function saveGameState(gameNumber, state) {
   }
 }
 
+function buildWinDetails(totalClicks, mistakesRemaining) {
+  const lines = [
+    `Rows cleared: ${ROWS_PER_GAME}/${ROWS_PER_GAME}`,
+    `Total clicks: ${totalClicks}`
+  ];
+  if (typeof mistakesRemaining === "number") {
+    lines.push(`Mistakes remaining: ${mistakesRemaining}`);
+  }
+  if (totalClicks === ROWS_PER_GAME) {
+    lines.push("Perfect Game!");
+  }
+  return lines.join("\n");
+}
+
 function App() {
   const { gameNumber } = getGameInfo();
 
@@ -168,10 +182,10 @@ function App() {
   React.useEffect(() => {
     if (cachedState) {
       if (cachedState.completed || cachedState.finishedAllRows) {
-        let details = `It took you ${cachedState.totalClicks} clicks.`;
-        if (cachedState.isPerfect) {
-          details += "\nPerfect Game!";
-        }
+        const details = buildWinDetails(
+          cachedState.totalClicks || ROWS_PER_GAME,
+          cachedState.mistakesLeft ?? MAX_MISTAKES
+        );
         setPopupMessage("You found all the imposters!");
         setPopupDetails(details);
         setShowPopup(true);
@@ -243,10 +257,7 @@ function App() {
               0
             );
 
-            let details = `It took you ${totalClicks} clicks.`;
-            if (totalClicks === ROWS_PER_GAME) {
-              details += "\nPerfect Game!";
-            }
+            const details = buildWinDetails(totalClicks, mistakesLeft);
 
             setPopupMessage("You found all the imposters!");
             setPopupDetails(details);

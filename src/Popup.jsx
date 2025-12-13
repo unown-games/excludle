@@ -8,10 +8,15 @@ function Popup({ message, details, onClose, tall = false }) {
   const isGameOver = lowerMessage.includes("game over");
   const isHowToPlay = lowerMessage.includes("how to play");
   const isAbout = lowerMessage.includes("about");
+  const isWin =
+    !isGameOver &&
+    (lowerMessage.includes("found all") ||
+      lowerMessage.includes("solved all") ||
+      lowerMessage.includes("you won"));
 
   // Generic paragraphs only used when NOT game over, not how-to-play, not about
   const paragraphs =
-    !isGameOver && !isHowToPlay && !isAbout && details
+    !isGameOver && !isHowToPlay && !isAbout && !isWin && details
       ? details.split(/\n\s*\n/).filter((p) => p.trim().length > 0)
       : [];
 
@@ -79,12 +84,63 @@ function Popup({ message, details, onClose, tall = false }) {
     if (oddLine) oddOneOut = oddLine.replace(/^Odd One Out:\s*/i, "");
   }
 
+  // ============ WIN PARSING ============
+  let winRowsCurrent = null;
+  let winRowsTotal = null;
+  let winClicks = null;
+  let winRowsLine = "";
+  let winClicksLine = "";
+  let isPerfectWin = false;
+  let winMistakesRemaining = null;
+  let winMistakesLine = "";
+
+  if (isWin && details) {
+    const lines = details
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0);
+
+    winRowsLine = lines.find((l) => l.toLowerCase().startsWith("rows"));
+    winClicksLine = lines.find((l) => l.toLowerCase().includes("click"));
+    winMistakesLine = lines.find((l) =>
+      l.toLowerCase().startsWith("mistakes remaining")
+    );
+    isPerfectWin = lines.some((l) => /perfect/i.test(l));
+
+    if (winRowsLine) {
+      const rowMatch = winRowsLine.match(/(\d+)\s*\/\s*(\d+)/);
+      if (rowMatch) {
+        winRowsCurrent = rowMatch[1];
+        winRowsTotal = rowMatch[2];
+      }
+    }
+
+    if (winClicksLine) {
+      const clickMatch = winClicksLine.match(/(\d+)/);
+      if (clickMatch) {
+        winClicks = clickMatch[1];
+      }
+    }
+
+    if (winMistakesLine) {
+      const mistakeMatch = winMistakesLine.match(/(\d+)/);
+      if (mistakeMatch) {
+        winMistakesRemaining = mistakeMatch[1];
+      }
+    }
+  }
+
+  const winAverageClicks =
+    winClicks && winRowsTotal
+      ? (Number(winClicks) / Number(winRowsTotal)).toFixed(1)
+      : null;
+
   // Icon
   const getIcon = () => {
     if (isGameOver) return "✕";
     if (isHowToPlay) return "?";
     if (isAbout) return "i";
-    if (lowerMessage.includes("found all")) return "★";
+    if (isWin) return "★";
     return "?";
   };
 
@@ -206,6 +262,57 @@ function Popup({ message, details, onClose, tall = false }) {
                   <div className="popup-result-value">{aboutReset}</div>
                 </div>
               </div>
+            </div>
+          ) :
+
+          /* ========== WIN STATE ========== */
+          isWin ? (
+            <div className="popup-results">
+              <div className="popup-summary">
+                <div className="popup-summary-label">Daily stats</div>
+                <div className="popup-summary-main">
+                  {winClicks ? `${winClicks} clicks to solve` : "Completed"}
+                </div>
+                {winRowsCurrent && winRowsTotal && (
+                  <div className="popup-summary-text">
+                    Rows solved: {winRowsCurrent}/{winRowsTotal}
+                  </div>
+                )}
+              </div>
+
+              <div className="popup-result-card popup-result-card-win">
+                {winAverageClicks && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Avg clicks per row</div>
+                    <div className="popup-result-value">
+                      {winAverageClicks}
+                    </div>
+                  </div>
+                )}
+
+                <div className="popup-result-block">
+                  <div className="popup-result-label">Lives left</div>
+                  <div className="popup-result-value popup-result-value-hearts">
+                    {winMistakesRemaining !== null ? (
+                      [...Array(Number(winMistakesRemaining))].map((_, idx) => (
+                        <span key={idx} className="popup-heart">
+                          ♥
+                        </span>
+                      ))
+                    ) : isPerfectWin ? (
+                      <span className="popup-heart">♥♥♥</span>
+                    ) : (
+                      "—"
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {isPerfectWin && (
+                <div className="popup-perfect-banner">
+                  🎯 Zero mistakes — flawless victory!
+                </div>
+              )}
             </div>
           ) :
 
