@@ -314,7 +314,7 @@ function Popup({ message, details, onClose, tall = false }) {
 
               {isPerfectWin && (
                 <div className="popup-perfect-banner">
-                  🎯 Zero mistakes — flawless victory!
+                  Zero mistakes — flawless victory!
                 </div>
               )}
             </div>
