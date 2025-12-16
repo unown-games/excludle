@@ -334,7 +334,7 @@
   color: #7f1d1d;
 }
 
-/* FOOTER: Game # (left) | Message (center) | Lives (right) */
+/* FOOTER: Game # (left) | Message (center) | Score & Lives (right) */
 
 .footer-bar {
   margin-top: 28px;
@@ -361,7 +361,22 @@
   color: #6b7280;
 }
 
-/* right: lives */
+/* right: score + lives grouped together */
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.score-display {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  padding: 4px 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
 .lives-row {
   display: flex;
   align-items: center;
@@ -378,6 +393,12 @@
 .heart {
   font-size: 18px;
   line-height: 1;
+}
+
+.life-infinite {
+  font-size: 22px;
+  color: #3b82f6;
+  font-weight: 700;
 }
 
 .life-full,
@@ -436,10 +457,28 @@
     gap: 8px;
   }
 
+  .footer-right {
+    gap: 8px;
+  }
+
+  .score-display {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
   .game-number,
   .footer-message,
   .lives-label {
     font-size: 12px;
+  }
+
+  .life-icon,
+  .heart {
+    font-size: 16px;
+  }
+
+  .life-infinite {
+    font-size: 20px;
   }
 }
 
@@ -506,6 +545,16 @@
 .app-root.dark .card.wrong {
   background: #7f1d1d;
   color: #ffecec;
+}
+
+.app-root.dark .score-display {
+  background: #062a44;
+  color: #e6eef6;
+  border: 1px solid rgba(230, 238, 246, 0.1);
+}
+
+.app-root.dark .life-infinite {
+  color: #60a5fa;
 }
 
 .app-root.dark .footer-bar {

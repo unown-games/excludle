@@ -66,7 +66,7 @@
   color: #111827;
 }
 
-/* Close “X” button – minimal, light theme */
+/* Close "X" button – minimal, light theme */
 .popup-close {
   width: 32px;
   height: 32px;
@@ -191,6 +191,13 @@
   color: #b91c1c;
 }
 
+/* Score value styling */
+.popup-result-value-score {
+  font-size: 20px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
 .popup-result-card-win {
   border: 1px solid #d9f99d;
   background: #f7fee7;
@@ -215,6 +222,49 @@
   display: inline-block;
 }
 
+/* ===== KEEP TRYING BUTTON SECTION ===== */
+
+.popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.popup-button {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+}
+
+.popup-button:hover {
+  transform: translateY(-1px);
+}
+
+.popup-keep-trying {
+  background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.popup-keep-trying:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.popup-keep-trying-note {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.4;
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .popup-content {
@@ -233,6 +283,15 @@
 
   .popup-result-card {
     padding: 14px 14px;
+  }
+
+  .popup-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .popup-keep-trying-note {
+    font-size: 11px;
   }
 }
 
@@ -283,6 +342,10 @@
   color: #fecaca;
 }
 
+.app-root.dark .popup-result-value-score {
+  color: #4ade80;
+}
+
 .app-root.dark .popup-result-card-win {
   background: rgba(5, 68, 94, 0.45);
   border-color: rgba(190, 242, 100, 0.4);
@@ -295,6 +358,20 @@
 
 .app-root.dark .popup-result-value-hearts {
   color: #f87171;
+}
+
+.app-root.dark .popup-keep-trying {
+  background: #1e40af;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.4);
+}
+
+.app-root.dark .popup-keep-trying:hover {
+  background: #1e3a8a;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.5);
+}
+
+.app-root.dark .popup-keep-trying-note {
+  color: #9ca3af;
 }
 
 /* ================================ */

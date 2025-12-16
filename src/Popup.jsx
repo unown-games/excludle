@@ -2,7 +2,7 @@ import React from "react";
 import "./Popup.css";
 import LockIcon from "./LockIcon";
 
-function Popup({ message, details, onClose, tall = false }) {
+function Popup({ message, details, onClose, onKeepTrying, tall = false }) {
   const stopClick = (e) => e.stopPropagation();
 
   const lowerMessage = (message || "").toLowerCase();
@@ -32,6 +32,7 @@ function Popup({ message, details, onClose, tall = false }) {
   let goal = "";
   let exampleText = "";
   let livesText = "";
+  let scoringText = "";
 
   if (isHowToPlay) {
     overview = instructionParagraphs[0] || "";
@@ -40,6 +41,7 @@ function Popup({ message, details, onClose, tall = false }) {
     const exExplain = instructionParagraphs[3] || "";
     exampleText = [exRow, exExplain].filter(Boolean).join(" ");
     livesText = instructionParagraphs[4] || "";
+    scoringText = instructionParagraphs[5] || "";
   }
 
   // ============ ABOUT PARSING ============
@@ -60,6 +62,7 @@ function Popup({ message, details, onClose, tall = false }) {
   let oddOneOut = "";
   let solvedCount = null;
   let totalRows = null;
+  let gameOverScore = null;
 
   if (isGameOver && details) {
     const lines = details
@@ -75,6 +78,9 @@ function Popup({ message, details, onClose, tall = false }) {
       totalRows = match[2];
     }
 
+    const scoreLine = lines.find((l) =>
+      l.toLowerCase().startsWith("total score:")
+    );
     const catLine = lines.find((l) =>
       l.toLowerCase().startsWith("category:")
     );
@@ -82,6 +88,12 @@ function Popup({ message, details, onClose, tall = false }) {
       l.toLowerCase().startsWith("odd one out:")
     );
 
+    if (scoreLine) {
+      const scoreMatch = scoreLine.match(/(\d+)\s*points?/i);
+      if (scoreMatch) {
+        gameOverScore = scoreMatch[1];
+      }
+    }
     if (catLine) category = catLine.replace(/^Category:\s*/i, "");
     if (oddLine) oddOneOut = oddLine.replace(/^Odd One Out:\s*/i, "");
   }
@@ -90,8 +102,10 @@ function Popup({ message, details, onClose, tall = false }) {
   let winRowsCurrent = null;
   let winRowsTotal = null;
   let winClicks = null;
+  let winScore = null;
   let winRowsLine = "";
   let winClicksLine = "";
+  let winScoreLine = "";
   let isPerfectWin = false;
   let winMistakesRemaining = null;
   let winMistakesLine = "";
@@ -103,7 +117,8 @@ function Popup({ message, details, onClose, tall = false }) {
       .filter((l) => l.length > 0);
 
     winRowsLine = lines.find((l) => l.toLowerCase().startsWith("rows"));
-    winClicksLine = lines.find((l) => l.toLowerCase().includes("click"));
+    winClicksLine = lines.find((l) => l.toLowerCase().includes("total clicks"));
+    winScoreLine = lines.find((l) => l.toLowerCase().includes("total score"));
     winMistakesLine = lines.find((l) =>
       l.toLowerCase().startsWith("mistakes remaining")
     );
@@ -121,6 +136,13 @@ function Popup({ message, details, onClose, tall = false }) {
       const clickMatch = winClicksLine.match(/(\d+)/);
       if (clickMatch) {
         winClicks = clickMatch[1];
+      }
+    }
+
+    if (winScoreLine) {
+      const scoreMatch = winScoreLine.match(/(\d+)\s*points?/i);
+      if (scoreMatch) {
+        winScore = scoreMatch[1];
       }
     }
 
@@ -193,6 +215,11 @@ function Popup({ message, details, onClose, tall = false }) {
                       solvedLine
                     )}
                   </div>
+                  {gameOverScore && (
+                    <div className="popup-summary-text">
+                      Total score: {gameOverScore} points
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -209,6 +236,18 @@ function Popup({ message, details, onClose, tall = false }) {
                   </div>
                 </div>
               </div>
+
+              {/* Keep Trying Button */}
+              {onKeepTrying && (
+                <div className="popup-actions">
+                  <button className="popup-button popup-keep-trying" onClick={onKeepTrying}>
+                    Keep Trying
+                  </button>
+                  <p className="popup-keep-trying-note">
+                    Continue playing, but remaining rows will score 0 points
+                  </p>
+                </div>
+              )}
             </div>
           ) : 
 
@@ -243,6 +282,13 @@ function Popup({ message, details, onClose, tall = false }) {
                     <div className="popup-result-value">{livesText}</div>
                   </div>
                 )}
+
+                {scoringText && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Scoring</div>
+                    <div className="popup-result-value">{scoringText}</div>
+                  </div>
+                )}
               </div>
             </div>
           ) :
@@ -275,7 +321,7 @@ function Popup({ message, details, onClose, tall = false }) {
               <div className="popup-summary">
                 <div className="popup-summary-label">Daily stats</div>
                 <div className="popup-summary-main">
-                  {winClicks ? `${winClicks} clicks to solve` : "Completed"}
+                  {winScore ? `${winScore} points` : winClicks ? `${winClicks} clicks to solve` : "Completed"}
                 </div>
                 {winRowsCurrent && winRowsTotal && (
                   <div className="popup-summary-text">
@@ -285,6 +331,15 @@ function Popup({ message, details, onClose, tall = false }) {
               </div>
 
               <div className="popup-result-card popup-result-card-win">
+                {winScore && (
+                  <div className="popup-result-block">
+                    <div className="popup-result-label">Total score</div>
+                    <div className="popup-result-value popup-result-value-score">
+                      {winScore} pts
+                    </div>
+                  </div>
+                )}
+
                 {winAverageClicks && (
                   <div className="popup-result-block">
                     <div className="popup-result-label">Avg clicks per row</div>

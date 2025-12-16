@@ -6,7 +6,7 @@ import LockIcon from "./LockIcon";
 
 const ROWS_PER_GAME = 4;
 const MAX_MISTAKES = 3;
-const USE_CACHING = true; // Toggle to false to disable caching for testing
+const USE_CACHING = false; // Toggle to false to disable caching for testing
 
 /**
  * Simple seeded RNG (Mulberry32)
@@ -132,10 +132,12 @@ function saveGameState(gameNumber, state) {
   }
 }
 
-function buildWinDetails(totalClicks, mistakesRemaining) {
+function buildWinDetails(totalClicks, mistakesRemaining, rowScores) {
+  const totalScore = rowScores.reduce((sum, score) => sum + score, 0);
   const lines = [
     `Rows cleared: ${ROWS_PER_GAME}/${ROWS_PER_GAME}`,
-    `Total clicks: ${totalClicks}`
+    `Total clicks: ${totalClicks}`,
+    `Total score: ${totalScore} points`
   ];
   if (typeof mistakesRemaining === "number") {
     lines.push(`Mistakes remaining: ${mistakesRemaining}`);
@@ -170,6 +172,8 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupDetails, setPopupDetails] = useState("");
+  const [rowScores, setRowScores] = useState(cachedState ? (cachedState.rowScores || [0, 0, 0, 0]) : [0, 0, 0, 0]);
+  const [continuedAfterGameOver, setContinuedAfterGameOver] = useState(cachedState ? (cachedState.continuedAfterGameOver || false) : false);
 
   const [showMenu, setShowMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -178,6 +182,61 @@ function App() {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+
+  const handleKeepTrying = () => {
+    // Mark the current failed row as "solved" so we skip to the next row
+    setRows(prevRows => {
+      const newRows = prevRows.map((row, idx) => {
+        if (idx === activeRowIndex) {
+          // Mark as solved even though they didn't complete it
+          return { ...row, solved: true };
+        }
+        return row;
+      });
+      return newRows;
+    });
+
+    // Set all unsolved rows (including the one we just marked) to 0 points
+    setRowScores(prevScores => {
+      const newScores = [...prevScores];
+      rows.forEach((row, idx) => {
+        if (!row.solved || idx === activeRowIndex) {
+          newScores[idx] = 0;
+        }
+      });
+      return newScores;
+    });
+
+    setContinuedAfterGameOver(true);
+    setGameOver(false);
+    setMistakesLeft(Infinity); // No life limit after continuing
+    setMessage("Keep going! No life limit.");
+    setShowPopup(false);
+
+    // Clear the category banner from the failed row
+    setCurrentCategory("");
+    setCategoryRowIndex(null);
+
+    // Save the updated state with the failed row marked as solved
+    const updatedRows = rows.map((row, idx) => {
+      if (idx === activeRowIndex) {
+        return { ...row, solved: true };
+      }
+      return row;
+    });
+
+    saveGameState(gameNumber, {
+      rows: updatedRows,
+      mistakesLeft: Infinity,
+      currentCategory: "",
+      categoryRowIndex: null,
+      completed: false,
+      finishedAllRows: false,
+      gameOver: false,
+      rowScores: rowScores.map((score, idx) => rows[idx].solved || idx === activeRowIndex ? 0 : score),
+      continuedAfterGameOver: true
+    });
+  };
   
   // If game was already completed or in progress, show appropriate UI on mount
   React.useEffect(() => {
@@ -185,7 +244,8 @@ function App() {
       if (cachedState.completed || cachedState.finishedAllRows) {
         const details = buildWinDetails(
           cachedState.totalClicks || ROWS_PER_GAME,
-          cachedState.mistakesLeft ?? MAX_MISTAKES
+          cachedState.mistakesLeft ?? MAX_MISTAKES,
+          cachedState.rowScores || [0, 0, 0, 0]
         );
         setPopupMessage("You found all the imposters!");
         setPopupDetails(details);
@@ -202,6 +262,11 @@ function App() {
 
   // Hearts for lives
   const renderLives = () => {
+    // If continued after game over, show infinity symbol instead of hearts
+    if (continuedAfterGameOver) {
+      return <span className="life-icon life-infinite">∞</span>;
+    }
+
     const hearts = [];
     for (let i = 0; i < MAX_MISTAKES; i++) {
       const full = i < mistakesLeft;
@@ -241,6 +306,28 @@ function App() {
             selectedIndex: cardIndex
           };
 
+          // Calculate points based on number of failures
+          const failures = row.wrongIndices.length;
+          let pointsEarned = 0;
+          if (continuedAfterGameOver) {
+            pointsEarned = 0; // No points after continuing
+          } else if (failures === 0) {
+            pointsEarned = 100;
+          } else if (failures === 1) {
+            pointsEarned = 75;
+          } else if (failures === 2) {
+            pointsEarned = 50;
+          } else {
+            pointsEarned = 0; // 3+ failures (shouldn't happen with 3 lives)
+          }
+
+          // Add points to the row score
+          setRowScores(prevScores => {
+            const newScores = [...prevScores];
+            newScores[rowIndex] = pointsEarned;
+            return newScores;
+          });
+
           setCurrentCategory(row.category);
           setCategoryRowIndex(rowIndex);
 
@@ -258,7 +345,11 @@ function App() {
               0
             );
 
-            const details = buildWinDetails(totalClicks, mistakesLeft);
+            // Get updated scores with the current row's points
+            const updatedScores = [...rowScores];
+            updatedScores[rowIndex] = pointsEarned;
+
+            const details = buildWinDetails(totalClicks, mistakesLeft, updatedScores);
 
             setPopupMessage("You found all the imposters!");
             setPopupDetails(details);
@@ -276,11 +367,16 @@ function App() {
               gameOver: false,
               totalClicks: totalClicks,
               isPerfect: totalClicks === ROWS_PER_GAME,
-              popupDetails: details
+              popupDetails: details,
+              rowScores: updatedScores,
+              continuedAfterGameOver: continuedAfterGameOver
             });
           } else {
             setMessage("Nice! Move on to the next row.");
             // Cache the current progress
+            const updatedScores = [...rowScores];
+            updatedScores[rowIndex] = pointsEarned;
+            
             saveGameState(gameNumber, {
               rows: tempRows,
               mistakesLeft: mistakesLeft,
@@ -288,7 +384,9 @@ function App() {
               categoryRowIndex: rowIndex,
               completed: false,
               finishedAllRows: false,
-              gameOver: false
+              gameOver: false,
+              rowScores: updatedScores,
+              continuedAfterGameOver: continuedAfterGameOver
             });
           }
 
@@ -304,7 +402,8 @@ function App() {
           newMistakesValue = newMistakes;
           setMistakesLeft(newMistakes);
 
-          if (newMistakes <= 0) {
+          // Only trigger game over if they haven't continued after a previous game over
+          if (newMistakes <= 0 && !continuedAfterGameOver) {
             setGameOver(true);
 
             // Status line in footer
@@ -315,8 +414,12 @@ function App() {
             const lostImposter =
               row.cards.find((c) => c.isImposter)?.text || "";
 
+            // Calculate total score for game over popup (current scores, no addition for failed row)
+            const totalScore = rowScores.reduce((sum, score) => sum + score, 0);
+
             const popupDetailsText =
               `You solved ${correctRows} of ${ROWS_PER_GAME} rows.\n\n` +
+              `Total score: ${totalScore} points\n\n` +
               `Category: ${lostCategory}\n\n` +
               `Odd One Out: ${lostImposter}`;
 
@@ -336,10 +439,13 @@ function App() {
               completed: false,
               finishedAllRows: false,
               gameOver: true,
-              popupDetails: popupDetailsText
+              popupDetails: popupDetailsText,
+              rowScores: rowScores,
+              continuedAfterGameOver: continuedAfterGameOver
             });
           } else {
             setMessage("Nope. Try a different option in this row.");
+            
             // Cache the current progress with the updated rows from the map
             saveGameState(gameNumber, {
               rows: prevRows.map((r, i) => i === rowIndex ? updatedRow : r),
@@ -348,7 +454,9 @@ function App() {
               categoryRowIndex: categoryRowIndex,
               completed: false,
               finishedAllRows: false,
-              gameOver: false
+              gameOver: false,
+              rowScores: rowScores,
+              continuedAfterGameOver: continuedAfterGameOver
             });
           }
 
@@ -372,7 +480,13 @@ Dog • Cat • Car • Horse • Bird
 
 The secret category is "Animals", so "Car" is the imposter.
 
-You only get ${MAX_MISTAKES} lives. Each wrong guess costs one heart. When you run out of lives, the game ends.`;
+You only get ${MAX_MISTAKES} lives. Each wrong guess costs one heart. When you run out of lives, the game ends.
+
+Scoring:
+• Correct on first try: +100 points
+• Correct with 1 mistake: +75 points
+• Correct with 2 mistakes: +50 points
+• Correct after continuing: +0 points`;
 
     setPopupMessage("How to play");
     setPopupDetails(instructions);
@@ -539,15 +653,20 @@ Questions or requests: Contact the developer at privacy@excludle.com and we will
             </div>
           </div>
 
-          {/* FOOTER ROW: Game # (left) | Message (center) | Lives (right) */}
+          {/* FOOTER ROW: Game # (left) | Message (center) | Score & Lives (right) */}
           <footer className="footer-bar">
             <div className="game-number">Game #{gameNumber}</div>
 
             <div className="footer-message">{message}</div>
 
-            <div className="lives-row">
-              <span className="lives-label">Lives:</span>
-              {renderLives()}
+            <div className="footer-right">
+              <div className="score-display">
+                Score: {rowScores.reduce((sum, score) => sum + score, 0)}
+              </div>
+              <div className="lives-row">
+                <span className="lives-label">Lives:</span>
+                {renderLives()}
+              </div>
             </div>
           </footer>
         </div>
@@ -558,6 +677,7 @@ Questions or requests: Contact the developer at privacy@excludle.com and we will
           message={popupMessage}
           details={popupDetails}
           onClose={handleClosePopup}
+          onKeepTrying={gameOver && !finishedAllRows && activeRowIndex < ROWS_PER_GAME - 1 ? handleKeepTrying : null}
           tall={popupMessage && /game over|how to play/i.test(popupMessage)}
         />
       )}
